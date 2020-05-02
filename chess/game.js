@@ -57,17 +57,18 @@ class Board {
     let squares = new Map();
     for (let file of FILES) {
       for (let rank of RANKS) {
-        squares[file + rank] = undefined;
+        squares.set(file + rank, undefined);
       }
     }
     this.squares = squares;
   }
 
   setSquare(position, piece) {
-    if (!(position in this.squares)) {
-      throw Error(`Cannot set square {position}`)
+    if (!this.squares.has(position)) {
+      debugger
+      throw Error(`Cannot set square ${position}`)
     }
-    this.squares[position] = piece;
+    this.squares.set(position, piece);
   }
 
   draw() {
@@ -82,27 +83,45 @@ class Piece {
 }
 
 class Pawn extends Piece {
-
+  constructor(color) {
+    super(color);
+    this.symbol = color == "white" ? "♙" : "♟";
+  }
 }
 
 class Rook extends Piece {
-
+  constructor(color) {
+    super(color);
+    this.symbol = color == "white" ? "♖" : "♜";
+  }
 }
 
 class Knight extends Piece {
-
+  constructor(color) {
+    super(color);
+    this.symbol = color == "white" ? "♘" : "♞";
+  }
 }
 
 class Bishop extends Piece {
-
+  constructor(color) {
+    super(color);
+    this.symbol = color == "white" ? "♗" : "♝";
+  }
 }
 
 class Queen extends Piece {
-
+  constructor(color) {
+    super(color);
+    this.symbol = color == "white" ? "♕" : "♛";
+  }
 }
 
 class King extends Piece {
-
+  constructor(color) {
+    super(color);
+    this.symbol = color == "white" ? "♔" : "♚";
+  }
 }
 
-export { Game };
+export { Game, RANKS, FILES };
