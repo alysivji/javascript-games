@@ -1,0 +1,24 @@
+{
+  "name": "vanilla-js-games",
+  "version": "1.0.0",
+  "description": "## Games List",
+  "main": "index.js",
+  "dependencies": {
+    "itertools": "^1.6.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alysivji/vanilla-js-games.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alysivji/vanilla-js-games/issues"
+  },
+  "homepage": "https://github.com/alysivji/vanilla-js-games#readme"
+}
