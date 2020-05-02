@@ -1,8 +1,15 @@
 import { cycle } from 'itertools';
 
 const RANKS = [1, 2, 3, 4, 5, 6, 7, 8]
-const FILES = ["A", "B", "C", "D", "E", "F", "G", "H"]
+const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"]
 const PLAYER_COLORS = ["white", "black"]
+
+function toRank(letter) {
+  return letter.charCodeAt() - 96;
+}
+function toFile(number) {
+  return String.fromCharCode(number + 96);
+}
 
 class Player {
   constructor(color) {
@@ -39,7 +46,8 @@ class Game {
     // TODO pass in board
     // TODO if no availableMoves, how should we inform person?
     // => Raise a custom exception :D
-    let availableMoves = piece.getAvailableMoves();
+    let positionObject = { file: position.substring(0, 1), rank: position.substring(1, 2) };
+    let availableMoves = piece.getAvailableMoves(this.board.squares, positionObject);
     return { selected: true, availableMoves: availableMoves }
   }
 
@@ -48,26 +56,26 @@ class Game {
   }
 
   _arrangePiecesForNewGame() {
-    this.board.setSquare("A1", new Rook("white"));
-    this.board.setSquare("B1", new Knight("white"));
-    this.board.setSquare("C1", new Bishop("white"));
-    this.board.setSquare("D1", new Queen("white"));
-    this.board.setSquare("E1", new King("white"));
-    this.board.setSquare("F1", new Bishop("white"));
-    this.board.setSquare("G1", new Knight("white"));
-    this.board.setSquare("H1", new Rook("white"));
+    this.board.setSquare("a1", new Rook("white"));
+    this.board.setSquare("b1", new Knight("white"));
+    this.board.setSquare("c1", new Bishop("white"));
+    this.board.setSquare("d1", new Queen("white"));
+    this.board.setSquare("e1", new King("white"));
+    this.board.setSquare("f1", new Bishop("white"));
+    this.board.setSquare("g1", new Knight("white"));
+    this.board.setSquare("h1", new Rook("white"));
     for (let letter of FILES) {
       this.board.setSquare(letter + "2", new Pawn("white"));
     }
 
-    this.board.setSquare("A8", new Rook("black"));
-    this.board.setSquare("B8", new Knight("black"));
-    this.board.setSquare("C8", new Bishop("black"));
-    this.board.setSquare("D8", new Queen("black"));
-    this.board.setSquare("E8", new King("black"));
-    this.board.setSquare("F8", new Bishop("black"));
-    this.board.setSquare("G8", new Knight("black"));
-    this.board.setSquare("H8", new Rook("black"));
+    this.board.setSquare("a8", new Rook("black"));
+    this.board.setSquare("b8", new Knight("black"));
+    this.board.setSquare("c8", new Bishop("black"));
+    this.board.setSquare("d8", new Queen("black"));
+    this.board.setSquare("e8", new King("black"));
+    this.board.setSquare("f8", new Bishop("black"));
+    this.board.setSquare("g8", new Knight("black"));
+    this.board.setSquare("h8", new Rook("black"));
     for (let letter of FILES) {
       this.board.setSquare(letter + "7", new Pawn("black"));
     }
@@ -79,7 +87,7 @@ class Board {
     let squares = new Map();
     for (let file of FILES) {
       for (let rank of RANKS) {
-        squares.set(file + rank, undefined);
+        squares.set(file + rank, "");
       }
     }
     this.squares = squares;
@@ -133,12 +141,42 @@ class Knight extends Piece {
   constructor(color) {
     super(color);
     this.symbol = color == "white" ? "♘" : "♞";
+    this.possibleMoves = [
+      [2, 1], [-2, 1], [2, -1], [-2, -1],
+      [1, 2], [-1, 2], [1, -2], [-1, -2],
+    ];
   }
 
-  getAvailableMoves() {
-    return ["A3", "C3"];
+  getAvailableMoves(board, position) {
+    let possibleMoves = [];
+
+    for (let [file_delta, rank_delta] of this.possibleMoves) {
+      let newFile = toFile(Number(toRank(position.file)) + file_delta);
+      let newRank = Number(position.rank) + rank_delta;
+      let newPosition = newFile + newRank;
+
+      // valid position
+      if (!board.has(newPosition)) {
+        continue;
+      }
+
+      // can jump to positions with no pieces
+      let square = board.get(newPosition)
+      if (!square) {
+        possibleMoves.push(newPosition);
+      }
+
+      // cannot take own pieces
+      let currentPositionSquare = board.get(position.file + position.rank);
+      if (square.color == currentPositionSquare.color) continue;
+
+      possibleMoves.push(newPosition);
+    }
+    // console.log(possibleMoves)
+    return possibleMoves;
   }
 }
+
 
 class Bishop extends Piece {
   constructor(color) {
