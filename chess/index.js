@@ -35,6 +35,21 @@ class HTMLChessManager {
 
   selectPiece(event) {
     let target = event.target;
+    let clickedPosition = target.id;
+
+    // moving piece
+    let movePiece = target.classList.contains("availableMove")
+    if (movePiece) {
+      // actually move piece
+      let positionToMove = document.getElementsByClassName("selected")[0].id
+      this.game.movePiece(positionToMove, clickedPosition);
+      document.querySelectorAll(".selected").forEach(square => square.classList.remove("selected"));
+      document.querySelectorAll(".availableMove").forEach(square => square.classList.remove("availableMove"));
+      this.update();
+      return;
+    }
+
+    // unselecting current piece
     let unselectPiece = target.classList.contains("selected")
     if (unselectPiece) {
       target.classList.remove("selected");
@@ -42,8 +57,8 @@ class HTMLChessManager {
       return;
     }
 
-    let position = target.id;
-    let { selected, availableMoves } = this.game.selectPiece(position);
+    // finding available moves
+    let { selected, availableMoves } = this.game.selectPiece(clickedPosition);
     if (selected) {
       document.querySelectorAll(".selected").forEach(square => square.classList.remove("selected"));
       target.classList.add("selected");

@@ -14,7 +14,11 @@ function toFile(number) {
 class Player {
   constructor(color) {
     this.color = color;
-    this.captured_pieces = [];
+    this.capturedPieces = [];
+  }
+
+  capturePiece(piece) {
+    this.capturedPieces.push(piece);
   }
 }
 
@@ -22,7 +26,7 @@ class Game {
   constructor() {
     let players = PLAYER_COLORS.map(color => new Player(color));
     this.players = cycle(players);
-    this.currentTurn = this._nextTurn();
+    this._nextTurn();
 
     this.board = new Board();
     this._arrangePiecesForNewGame();
@@ -43,7 +47,6 @@ class Game {
       return { selected: false, availableMoves: [] }
     }
 
-    // TODO pass in board
     // TODO if no availableMoves, how should we inform person?
     // => Raise a custom exception :D
     let positionObject = { file: position.substring(0, 1), rank: position.substring(1, 2) };
@@ -51,8 +54,22 @@ class Game {
     return { selected: true, availableMoves: availableMoves }
   }
 
+  movePiece(currPosition, newPosition) {
+    let pieceToMove = this.board.getPiece(currPosition);
+    // SQUARE IS A WEIDR NAME; think we should have Empty pieces
+    let square = this.board.getPiece(newPosition);
+
+    if (square) {
+      this.board.setSquare(currPosition, "");
+      this.currentTurn.capturePiece(square);
+    }
+    this.board.setSquare(currPosition, "");
+    this.board.setSquare(newPosition, pieceToMove);
+    this._nextTurn();
+  }
+
   _nextTurn() {
-    return this.players.next().value;
+    this.currentTurn = this.players.next().value;
   }
 
   _arrangePiecesForNewGame() {
@@ -172,7 +189,6 @@ class Knight extends Piece {
 
       possibleMoves.push(newPosition);
     }
-    // console.log(possibleMoves)
     return possibleMoves;
   }
 }
