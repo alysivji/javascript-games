@@ -26,7 +26,7 @@ class HTMLChessManager {
   }
 
   update() {
-    let { board } = this.game.currentState();
+    let { board } = this.game.currentState;
     board.forEach((piece, position) => {
       let square = document.getElementById(position);
       square.innerText = piece ? piece.symbol : "";
@@ -38,16 +38,20 @@ class HTMLChessManager {
     let unselectPiece = target.classList.contains("selected")
     if (unselectPiece) {
       target.classList.remove("selected");
+      document.querySelectorAll(".availableMove").forEach(square => square.classList.remove("availableMove"));
       return;
     }
 
     let position = target.id;
     let { selected, availableMoves } = this.game.selectPiece(position);
     if (selected) {
-      for (let square of document.getElementsByClassName("selected")) {
-        square.classList.remove("selected");
-      }
+      document.querySelectorAll(".selected").forEach(square => square.classList.remove("selected"));
       target.classList.add("selected");
+    }
+
+    for (let move of availableMoves) {
+      let square = document.getElementById(move);
+      square.classList.add("availableMove");
     }
   }
 

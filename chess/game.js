@@ -15,22 +15,36 @@ class Game {
   constructor() {
     let players = PLAYER_COLORS.map(color => new Player(color));
     this.players = cycle(players);
-    this.current_turn = this.nextTurn();
+    this.currentTurn = this._nextTurn();
 
     this.board = new Board();
     this._arrangePiecesForNewGame();
   }
 
-  nextTurn() {
-    return this.players.next().value;
-  }
-
-  currentState() {
+  get currentState() {
     return { board: this.board.squares };
   }
 
   selectPiece(position) {
-    return { selected: true, availableMoves: [] }
+    let piece = this.board.getPiece(position);
+    if (!piece) {
+      return { selected: false, availableMoves: [] }
+    }
+
+    let playersPiece = this.currentTurn.color === piece.color
+    if (!playersPiece) {
+      return { selected: false, availableMoves: [] }
+    }
+
+    // TODO pass in board
+    // TODO if no availableMoves, how should we inform person?
+    // => Raise a custom exception :D
+    let availableMoves = piece.getAvailableMoves();
+    return { selected: true, availableMoves: availableMoves }
+  }
+
+  _nextTurn() {
+    return this.players.next().value;
   }
 
   _arrangePiecesForNewGame() {
@@ -73,20 +87,24 @@ class Board {
 
   setSquare(position, piece) {
     if (!this.squares.has(position)) {
-      debugger
       throw Error(`Cannot set square ${position}`)
     }
     this.squares.set(position, piece);
   }
 
-  draw() {
-    // drawing logic should be here
+  getPiece(position) {
+    return this.squares.get(position);
   }
 }
 
 class Piece {
   constructor(color) {
     this.color = color;
+  }
+
+  getAvailableMoves() {
+    return [];
+    // throw new Error('Object does not support the interface.');
   }
 }
 
@@ -108,6 +126,10 @@ class Knight extends Piece {
   constructor(color) {
     super(color);
     this.symbol = color == "white" ? "♘" : "♞";
+  }
+
+  getAvailableMoves() {
+    return ["A3", "C3"];
   }
 }
 
