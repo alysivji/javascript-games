@@ -21,9 +21,7 @@ class HTMLChessboard {
   boardToHTML(board) {
     board.squares.forEach((piece, position) => {
       let square = document.getElementById(position);
-      if (piece) {
-        square.innerHTML = piece.symbol;
-      }
+      square.innerText = piece ? piece.symbol : "";
     });
   }
 }
