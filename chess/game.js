@@ -103,8 +103,7 @@ class Piece {
   }
 
   getAvailableMoves() {
-    return [];
-    // throw new Error('Object does not support the interface.');
+    throw new Error('Object does not support the interface.');
   }
 }
 
@@ -113,12 +112,20 @@ class Pawn extends Piece {
     super(color);
     this.symbol = color == "white" ? "♙" : "♟";
   }
+
+  getAvailableMoves() {
+    return [];
+  }
 }
 
 class Rook extends Piece {
   constructor(color) {
     super(color);
     this.symbol = color == "white" ? "♖" : "♜";
+  }
+
+  getAvailableMoves() {
+    return [];
   }
 }
 
@@ -138,6 +145,10 @@ class Bishop extends Piece {
     super(color);
     this.symbol = color == "white" ? "♗" : "♝";
   }
+
+  getAvailableMoves() {
+    return [];
+  }
 }
 
 class Queen extends Piece {
@@ -145,12 +156,20 @@ class Queen extends Piece {
     super(color);
     this.symbol = color == "white" ? "♕" : "♛";
   }
+
+  getAvailableMoves() {
+    return [];
+  }
 }
 
 class King extends Piece {
   constructor(color) {
     super(color);
     this.symbol = color == "white" ? "♔" : "♚";
+  }
+
+  getAvailableMoves() {
+    return [];
   }
 }
 
