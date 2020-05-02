@@ -1,10 +1,17 @@
 import { Game, RANKS, FILES } from "./game.js";
 
-class HTMLChessboard {
-  constructor() {
+class HTMLChessManager {
+  constructor(game) {
+    this.game = game;
+    this._drawBoard();
+    this.update();
+  }
+
+  _drawBoard() {
     for (let rank of RANKS.reverse()) {
       for (let file of FILES) {
         let div = document.createElement("div");
+        div.addEventListener('click', event => this.selectPiece(event));
 
         let position = file + rank;
         div.id = position;
@@ -18,18 +25,33 @@ class HTMLChessboard {
     }
   }
 
-  boardToHTML(board) {
-    board.squares.forEach((piece, position) => {
+  update() {
+    let { board } = this.game.currentState();
+    board.forEach((piece, position) => {
       let square = document.getElementById(position);
       square.innerText = piece ? piece.symbol : "";
     });
   }
+
+  selectPiece(event) {
+    let target = event.target;
+    let unselectPiece = target.classList.contains("selected")
+    if (unselectPiece) {
+      target.classList.remove("selected");
+      return;
+    }
+
+    let position = target.id;
+    let { selected, availableMoves } = this.game.selectPiece(position);
+    if (selected) {
+      for (let square of document.getElementsByClassName("selected")) {
+        square.classList.remove("selected");
+      }
+      target.classList.add("selected");
+    }
+  }
+
 }
 
-let g = new Game();
-let board = g.board;
-console.log(board);
-
 const chessboardElement = document.getElementById("chessboard");
-let htmlChessboard = new HTMLChessboard();
-htmlChessboard.boardToHTML(board);
+new HTMLChessManager(new Game());

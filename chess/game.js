@@ -25,6 +25,14 @@ class Game {
     return this.players.next().value;
   }
 
+  currentState() {
+    return { board: this.board.squares };
+  }
+
+  selectPiece(position) {
+    return { selected: true, availableMoves: [] }
+  }
+
   _arrangePiecesForNewGame() {
     this.board.setSquare("A1", new Rook("white"));
     this.board.setSquare("B1", new Knight("white"));
