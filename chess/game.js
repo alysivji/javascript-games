@@ -56,6 +56,7 @@ class Game {
       return [];
     }
 
+    // playerspiece
     let playersPiece = this.currentTurn.color === piece.color
     if (!playersPiece) {
       return [];
@@ -67,15 +68,6 @@ class Game {
 
   movePiece(currPosition, newPosition) {
     const pieceToMove = this.board.getPiece(currPosition);
-    if (!pieceToMove) {
-      throw Error("no piece selected")
-    }
-
-    const playersPiece = this.currentTurn.color === pieceToMove.color
-    if (!playersPiece) {
-      throw Error("Not your turn")
-    }
-
     const allowedMove = this.getAvailableMoves(currPosition).includes(newPosition)
     if (allowedMove) {
       const capturingPiece = this.board.getPiece(newPosition);

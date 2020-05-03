@@ -11,7 +11,7 @@
 - [ ] piees can move if king is in check; need to figure out how to check this; sounds like we need to simulate a move
 - [ ] move history
 - [ ] have an `EmptyPiece`
-- [ ] have a `isValidMove` check versus using CSS from front-end (state is spread everywhere, well not everywhere; just )
+- [x] have a `isValidMove` check versus using CSS from front-end (state is spread everywhere, well not everywhere; just )
 
 ## Todo (Long Term)
 
