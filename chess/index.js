@@ -11,7 +11,6 @@ class HTMLChessManager {
     for (let rank of RANKS.reverse()) {
       for (let file of FILES) {
         let div = document.createElement("div");
-        // div.addEventListener('click', event => this.selectPiece(event));
         div.addEventListener('click', event => this.handleBoardClick(event));
 
         let position = file + rank;
@@ -63,47 +62,6 @@ class HTMLChessManager {
       this.update();
     }
   }
-
-  selectPiece(event) {
-    let target = event.target;
-    let clickedPosition = target.id;
-
-    // TODO need to move availableMoves decision in chess engine
-    // document.querySelectorAll(".availableMove").forEach(square => square.classList.remove("availableMove"));
-
-    // moving piece
-    let movePiece = target.classList.contains("availableMove")
-    if (movePiece) {
-      // actually move piece
-      let positionToMove = document.getElementsByClassName("selected")[0].id
-      this.game.movePiece(positionToMove, clickedPosition);
-      document.querySelectorAll(".selected").forEach(square => square.classList.remove("selected"));
-      document.querySelectorAll(".availableMove").forEach(square => square.classList.remove("availableMove"));
-      this.update();
-      return;
-    }
-
-    // unselecting current piece
-    let unselectPiece = target.classList.contains("selected")
-    if (unselectPiece) {
-      target.classList.remove("selected");
-      document.querySelectorAll(".availableMove").forEach(square => square.classList.remove("availableMove"));
-      return;
-    }
-
-    // finding available moves
-    let { selected, availableMoves } = this.game.selectPiece(clickedPosition);
-    if (selected) {
-      document.querySelectorAll(".selected").forEach(square => square.classList.remove("selected"));
-      target.classList.add("selected");
-    }
-
-    for (let move of availableMoves) {
-      let square = document.getElementById(move);
-      square.classList.add("availableMove");
-    }
-  }
-
 }
 
 const chessboardElement = document.getElementById("chessboard");

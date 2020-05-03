@@ -49,24 +49,6 @@ class Game {
     };
   }
 
-  selectPiece(position) {
-    let piece = this.board.getPiece(position);
-    if (!piece) {
-      return { selected: false, availableMoves: [] }
-    }
-
-    let playersPiece = this.currentTurn.color === piece.color
-    if (!playersPiece) {
-      return { selected: false, availableMoves: [] }
-    }
-
-    // TODO if no availableMoves, how should we inform person?
-    // => Raise a custom exception :D
-    let positionObject = { file: position.substring(0, 1), rank: position.substring(1, 2) };
-    let availableMoves = piece.getAvailableMoves(this.board.squares, positionObject);
-    return { selected: true, availableMoves: availableMoves }
-  }
-
   getAvailableMoves(position) {
     // not a piece
     let piece = this.board.getPiece(position);
@@ -84,7 +66,6 @@ class Game {
   }
 
   movePiece(currPosition, newPosition) {
-    // throw an Error if not possible; it should know how to handle
     const pieceToMove = this.board.getPiece(currPosition);
     if (!pieceToMove) {
       throw Error("no piece selected")
