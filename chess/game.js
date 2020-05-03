@@ -80,7 +80,7 @@ class Game {
     this.board.setSquare("e1", new King("white"));
     this.board.setSquare("f1", new Bishop("white"));
     this.board.setSquare("g1", new Knight("white"));
-    this.board.setSquare("h1", new Rook("white"));
+    this.board.setSquare("d5", new Rook("white"));
     for (let letter of FILES) {
       this.board.setSquare(letter + "2", new Pawn("white"));
     }
@@ -147,10 +147,42 @@ class Rook extends Piece {
   constructor(color) {
     super(color);
     this.symbol = color == "white" ? "♖" : "♜";
+    this.directionVectors = [[1, 0], [-1, 0], [0, 1], [0, -1]];
   }
 
-  getAvailableMoves() {
-    return [];
+  getAvailableMoves(board, position) {
+    let availableMoves = [];
+
+    for (let [file_dir, rank_dir] of this.directionVectors) {
+      let multiplier = 1;
+      do {
+        let newFile = toFile(Number(toRank(position.file)) + file_dir * multiplier);
+        let newRank = Number(position.rank) + rank_dir * multiplier;
+        let newPosition = newFile + newRank;
+        multiplier++;
+
+        // not valid
+        if (!board.has(newPosition)) {
+          break;
+        }
+
+        // if position is empty, add it and continue
+        let square = board.get(newPosition)
+        if (!square) {
+          availableMoves.push(newPosition);
+          continue;
+        }
+
+        // if position is your color, break
+        let currentPositionSquare = board.get(position.file + position.rank);
+        if (square.color == currentPositionSquare.color) break;
+
+        // if position is opponent's color, add it and break
+        availableMoves.push(newPosition);
+        break;
+      } while (true);
+    }
+    return availableMoves;
   }
 }
 
@@ -228,4 +260,4 @@ class King extends Piece {
   }
 }
 
-export { Board, Game, Knight, RANKS, FILES };
+export { Board, Game, Knight, Rook, Bishop, Pawn, Queen, King, RANKS, FILES };
