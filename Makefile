@@ -8,3 +8,6 @@ tictactoe:
 
 pong:
 	parcel pong-mouse/index.html
+
+test:
+	./node_modules/.bin/jest

@@ -73,29 +73,29 @@ class Game {
   }
 
   _arrangePiecesForNewGame() {
-    this.board.setSquare("a1", new Rook("white"));
+    // this.board.setSquare("a1", new Rook("white"));
     this.board.setSquare("b1", new Knight("white"));
-    this.board.setSquare("c1", new Bishop("white"));
-    this.board.setSquare("d1", new Queen("white"));
-    this.board.setSquare("e1", new King("white"));
-    this.board.setSquare("f1", new Bishop("white"));
-    this.board.setSquare("g1", new Knight("white"));
-    this.board.setSquare("h1", new Rook("white"));
-    for (let letter of FILES) {
-      this.board.setSquare(letter + "2", new Pawn("white"));
-    }
+    // this.board.setSquare("c1", new Bishop("white"));
+    // this.board.setSquare("d1", new Queen("white"));
+    // this.board.setSquare("e1", new King("white"));
+    // this.board.setSquare("f1", new Bishop("white"));
+    // this.board.setSquare("g1", new Knight("white"));
+    // this.board.setSquare("h1", new Rook("white"));
+    // for (let letter of FILES) {
+    //   this.board.setSquare(letter + "2", new Pawn("white"));
+    // }
 
-    this.board.setSquare("a8", new Rook("black"));
-    this.board.setSquare("b8", new Knight("black"));
-    this.board.setSquare("c8", new Bishop("black"));
-    this.board.setSquare("d8", new Queen("black"));
-    this.board.setSquare("e8", new King("black"));
-    this.board.setSquare("f8", new Bishop("black"));
-    this.board.setSquare("g8", new Knight("black"));
-    this.board.setSquare("h8", new Rook("black"));
-    for (let letter of FILES) {
-      this.board.setSquare(letter + "7", new Pawn("black"));
-    }
+    // this.board.setSquare("a8", new Rook("black"));
+    // this.board.setSquare("b8", new Knight("black"));
+    // this.board.setSquare("c8", new Bishop("black"));
+    // this.board.setSquare("d8", new Queen("black"));
+    // this.board.setSquare("e8", new King("black"));
+    // this.board.setSquare("f8", new Bishop("black"));
+    // this.board.setSquare("g8", new Knight("black"));
+    // this.board.setSquare("h8", new Rook("black"));
+    // for (let letter of FILES) {
+    //   this.board.setSquare(letter + "7", new Pawn("black"));
+    // }
   }
 }
 
@@ -165,7 +165,7 @@ class Knight extends Piece {
   }
 
   getAvailableMoves(board, position) {
-    let possibleMoves = [];
+    let availableMoves = [];
 
     for (let [file_delta, rank_delta] of this.possibleMoves) {
       let newFile = toFile(Number(toRank(position.file)) + file_delta);
@@ -180,16 +180,17 @@ class Knight extends Piece {
       // can jump to positions with no pieces
       let square = board.get(newPosition)
       if (!square) {
-        possibleMoves.push(newPosition);
+        availableMoves.push(newPosition);
+        continue
       }
 
       // cannot take own pieces
       let currentPositionSquare = board.get(position.file + position.rank);
       if (square.color == currentPositionSquare.color) continue;
 
-      possibleMoves.push(newPosition);
+      availableMoves.push(newPosition);
     }
-    return possibleMoves;
+    return availableMoves;
   }
 }
 
@@ -227,4 +228,4 @@ class King extends Piece {
   }
 }
 
-export { Game, RANKS, FILES };
+export { Board, Game, Knight, RANKS, FILES };

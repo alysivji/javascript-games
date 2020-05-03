@@ -1,12 +1,16 @@
 {
   "name": "vanilla-js-games",
   "version": "1.0.0",
-  "description": "## Games List",
+  "description": "Practice making games.",
   "main": "index.js",
   "dependencies": {
     "itertools": "^1.6.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@babel/preset-env": "^7.9.6",
+    "babel-jest": "^25.5.1",
+    "jest": "^25.5.4"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

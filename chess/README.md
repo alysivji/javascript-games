@@ -7,6 +7,8 @@
 
 ## Short Term Todo
 
+- [x] write test to ensure we get the required information back
+- [ ] knight can move if king is in check; need to add the conditional check
 - [ ] move history
 - [ ] have an `EmptyPiece`
 
