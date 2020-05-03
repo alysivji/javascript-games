@@ -73,29 +73,29 @@ class Game {
   }
 
   _arrangePiecesForNewGame() {
-    // this.board.setSquare("a1", new Rook("white"));
+    this.board.setSquare("a1", new Rook("white"));
     this.board.setSquare("b1", new Knight("white"));
-    // this.board.setSquare("c1", new Bishop("white"));
-    // this.board.setSquare("d1", new Queen("white"));
-    // this.board.setSquare("e1", new King("white"));
-    // this.board.setSquare("f1", new Bishop("white"));
-    // this.board.setSquare("g1", new Knight("white"));
-    // this.board.setSquare("h1", new Rook("white"));
-    // for (let letter of FILES) {
-    //   this.board.setSquare(letter + "2", new Pawn("white"));
-    // }
+    this.board.setSquare("c1", new Bishop("white"));
+    this.board.setSquare("d1", new Queen("white"));
+    this.board.setSquare("e1", new King("white"));
+    this.board.setSquare("f1", new Bishop("white"));
+    this.board.setSquare("g1", new Knight("white"));
+    this.board.setSquare("h1", new Rook("white"));
+    for (let letter of FILES) {
+      this.board.setSquare(letter + "2", new Pawn("white"));
+    }
 
-    // this.board.setSquare("a8", new Rook("black"));
-    // this.board.setSquare("b8", new Knight("black"));
-    // this.board.setSquare("c8", new Bishop("black"));
-    // this.board.setSquare("d8", new Queen("black"));
-    // this.board.setSquare("e8", new King("black"));
-    // this.board.setSquare("f8", new Bishop("black"));
-    // this.board.setSquare("g8", new Knight("black"));
-    // this.board.setSquare("h8", new Rook("black"));
-    // for (let letter of FILES) {
-    //   this.board.setSquare(letter + "7", new Pawn("black"));
-    // }
+    this.board.setSquare("a8", new Rook("black"));
+    this.board.setSquare("b8", new Knight("black"));
+    this.board.setSquare("c8", new Bishop("black"));
+    this.board.setSquare("d8", new Queen("black"));
+    this.board.setSquare("e8", new King("black"));
+    this.board.setSquare("f8", new Bishop("black"));
+    this.board.setSquare("g8", new Knight("black"));
+    this.board.setSquare("h8", new Rook("black"));
+    for (let letter of FILES) {
+      this.board.setSquare(letter + "7", new Pawn("black"));
+    }
   }
 }
 

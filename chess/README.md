@@ -11,7 +11,9 @@
 - [ ] knight can move if king is in check; need to add the conditional check
 - [ ] move history
 - [ ] have an `EmptyPiece`
+- [ ] have a `isValidMove` check versus using CSS from front-end (state is spread everywhere)
 
 ## Todo (Long Term)
 
 - separate out logic so we can implement [chessboard.js](https://chessboardjs.com/)
+- compose Queen movement from Rook and Bishop movement
