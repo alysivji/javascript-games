@@ -24,8 +24,8 @@ class Player {
 
 class Game {
   constructor() {
-    let players = PLAYER_COLORS.map(color => new Player(color));
-    this.players = cycle(players);
+    this.players = PLAYER_COLORS.map(color => new Player(color));
+    this.playersTurn = cycle(this.players);
     this._nextTurn();
 
     this.board = new Board();
@@ -33,7 +33,20 @@ class Game {
   }
 
   get currentState() {
-    return { board: this.board.squares };
+    return {
+      board: this.board.squares,
+      turn: this.currentTurn.color,
+      players: [
+        {
+          color: this.players[0].color,
+          capturedPieces: this.players[0].capturedPieces,
+        },
+        {
+          color: this.players[1].color,
+          capturedPieces: this.players[1].capturedPieces,
+        }
+      ]
+    };
   }
 
   selectPiece(position) {
@@ -54,23 +67,50 @@ class Game {
     return { selected: true, availableMoves: availableMoves }
   }
 
-  movePiece(currPosition, newPosition) {
-    let pieceToMove = this.board.getPiece(currPosition);
-    // SQUARE IS A WEIDR NAME; think we should have Empty pieces
-    let square = this.board.getPiece(newPosition);
-
-    if (square) {
-      this.board.setSquare(currPosition, "");
-      this.currentTurn.capturePiece(square);
+  getAvailableMoves(position) {
+    // not a piece
+    let piece = this.board.getPiece(position);
+    if (!piece) {
+      return [];
     }
-    this.board.setSquare(currPosition, "");
-    this.board.setSquare(newPosition, pieceToMove);
-    pieceToMove.incrementMovesCounter();
-    this._nextTurn();
+
+    let playersPiece = this.currentTurn.color === piece.color
+    if (!playersPiece) {
+      return [];
+    }
+
+    let positionObject = { file: position.substring(0, 1), rank: position.substring(1, 2) };
+    return piece.getAvailableMoves(this.board.squares, positionObject);
+  }
+
+  movePiece(currPosition, newPosition) {
+    // throw an Error if not possible; it should know how to handle
+    const pieceToMove = this.board.getPiece(currPosition);
+    if (!pieceToMove) {
+      throw Error("no piece selected")
+    }
+
+    const playersPiece = this.currentTurn.color === pieceToMove.color
+    if (!playersPiece) {
+      throw Error("Not your turn")
+    }
+
+    const allowedMove = this.getAvailableMoves(currPosition).includes(newPosition)
+    if (allowedMove) {
+      const capturingPiece = this.board.getPiece(newPosition);
+      if (capturingPiece) {
+        this.currentTurn.capturePiece(capturingPiece);
+        this.board.setSquare(currPosition, "");
+      }
+      this.board.setSquare(currPosition, "");
+      this.board.setSquare(newPosition, pieceToMove);
+      pieceToMove.incrementMovesCounter();
+      this._nextTurn();
+    }
   }
 
   _nextTurn() {
-    this.currentTurn = this.players.next().value;
+    this.currentTurn = this.playersTurn.next().value;
   }
 
   _arrangePiecesForNewGame() {

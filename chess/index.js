@@ -11,7 +11,8 @@ class HTMLChessManager {
     for (let rank of RANKS.reverse()) {
       for (let file of FILES) {
         let div = document.createElement("div");
-        div.addEventListener('click', event => this.selectPiece(event));
+        // div.addEventListener('click', event => this.selectPiece(event));
+        div.addEventListener('click', event => this.handleBoardClick(event));
 
         let position = file + rank;
         div.id = position;
@@ -26,11 +27,41 @@ class HTMLChessManager {
   }
 
   update() {
-    let { board } = this.game.currentState;
+    let { board, turn } = this.game.currentState;
     board.forEach((piece, position) => {
       let square = document.getElementById(position);
       square.innerText = piece ? piece.symbol : "";
     });
+    // update DOM node that showns turn
+  }
+
+  handleBoardClick(event) {
+    const previouslySelected = document.getElementsByClassName("selected")[0]
+
+    document.querySelectorAll(".selected").forEach(square => square.classList.remove("selected"));
+    document.querySelectorAll(".availableMove").forEach(square => square.classList.remove("availableMove"));
+
+    let position = event.target.id;
+
+    let { board, turn } = this.game.currentState;
+    let piece = board.get(position);
+
+    if (!previouslySelected) {
+      if (!piece) return;
+      if (piece.color != turn) return;
+
+      // select piece
+      event.target.classList.add("selected");
+      let availableMoves = this.game.getAvailableMoves(position);
+      for (let move of availableMoves) {
+        let square = document.getElementById(move);
+        square.classList.add("availableMove");
+      }
+    } else {
+      const previouslySelectedPosition = previouslySelected.id
+      this.game.movePiece(previouslySelectedPosition, position);
+      this.update();
+    }
   }
 
   selectPiece(event) {
