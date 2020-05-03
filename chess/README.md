@@ -8,10 +8,10 @@
 ## Short Term Todo
 
 - [x] write test to ensure we get the required information back
-- [ ] knight can move if king is in check; need to add the conditional check
+- [ ] piees can move if king is in check; need to figure out how to check this; sounds like we need to simulate a move
 - [ ] move history
 - [ ] have an `EmptyPiece`
-- [ ] have a `isValidMove` check versus using CSS from front-end (state is spread everywhere)
+- [ ] have a `isValidMove` check versus using CSS from front-end (state is spread everywhere, well not everywhere; just )
 
 ## Todo (Long Term)
 

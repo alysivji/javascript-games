@@ -65,6 +65,7 @@ class Game {
     }
     this.board.setSquare(currPosition, "");
     this.board.setSquare(newPosition, pieceToMove);
+    pieceToMove.incrementMovesCounter();
     this._nextTurn();
   }
 
@@ -76,7 +77,7 @@ class Game {
     this.board.setSquare("a1", new Rook("white"));
     this.board.setSquare("b1", new Knight("white"));
     this.board.setSquare("c1", new Bishop("white"));
-    this.board.setSquare("d5", new Queen("white"));
+    this.board.setSquare("d1", new Queen("white"));
     this.board.setSquare("e1", new King("white"));
     this.board.setSquare("f1", new Bishop("white"));
     this.board.setSquare("g1", new Knight("white"));
@@ -125,6 +126,11 @@ class Board {
 class Piece {
   constructor(color) {
     this.color = color;
+    this.numMoves = 0;
+  }
+
+  incrementMovesCounter() {
+    this.numMoves++;
   }
 
   getAvailableMoves() {
@@ -133,13 +139,47 @@ class Piece {
 }
 
 class Pawn extends Piece {
+  // if we get to end, can become any piece; this is in game loop
+  // or in move piece
+
   constructor(color) {
     super(color);
     this.symbol = color == "white" ? "♙" : "♟";
+    this.move = color == "white" ? 1 : -1;
   }
 
-  getAvailableMoves() {
-    return [];
+  getAvailableMoves(board, position) {
+    // can we move forward?
+    let newRank = Number(position.rank) + this.move;
+    let newPosition = position.file + newRank;
+
+    if (!board.has(newPosition)) {
+      return [];
+    }
+
+    let availableMoves = [];
+    // can jump to positions with no pieces
+    if (!board.get(newPosition)) {
+      availableMoves.push(newPosition);
+
+      if (this.numMoves == 0) {
+        // pawns that haven't moved can go 2 spaces
+        newRank = Number(position.rank) + this.move * 2;
+        newPosition = position.file + newRank;
+        if (!board.get(newPosition)) {
+          availableMoves.push(newPosition);
+        }
+      }
+    }
+
+    // if capture available, add diagonal
+
+    // TODO en passant
+
+    // white pawns, move forward
+    // black pawns, move down
+
+    return availableMoves;
   }
 }
 
@@ -225,7 +265,6 @@ class Knight extends Piece {
     return availableMoves;
   }
 }
-
 
 class Bishop extends Piece {
   constructor(color) {

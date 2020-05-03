@@ -37,6 +37,9 @@ class HTMLChessManager {
     let target = event.target;
     let clickedPosition = target.id;
 
+    // TODO need to move availableMoves decision in chess engine
+    // document.querySelectorAll(".availableMove").forEach(square => square.classList.remove("availableMove"));
+
     // moving piece
     let movePiece = target.classList.contains("availableMove")
     if (movePiece) {
