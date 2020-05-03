@@ -173,11 +173,21 @@ class Pawn extends Piece {
     }
 
     // if capture available, add diagonal
+    newRank = Number(position.rank) + this.move;
+    for (let fileDelta of [1, -1]) {
+      const newFile = toFile(Number(toRank(position.file)) + fileDelta);
+      newPosition = newFile + newRank;
+
+      const piece = board.get(newPosition);
+      if (!piece) {
+        continue
+      }
+      const currentPositionSquare = board.get(position.file + position.rank);
+      if (piece.color == currentPositionSquare.color) continue;
+      availableMoves.push(newPosition);
+    }
 
     // TODO en passant
-
-    // white pawns, move forward
-    // black pawns, move down
 
     return availableMoves;
   }
