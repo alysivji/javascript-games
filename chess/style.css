@@ -2,7 +2,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-#chessboard {
+#html-chessboard {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

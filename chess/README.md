@@ -7,13 +7,17 @@
 
 ## Short Term Todo
 
-- [x] write test to ensure we get the required information back
 - [ ] piees can move if king is in check; need to figure out how to check this; sounds like we need to simulate a move
+  - related, we can move somewhere and still be in check, need to have that test to ensure we don't make those valid positions
 - [ ] move history
 - [ ] have an `EmptyPiece`
-- [x] have a `isValidMove` check versus using CSS from front-end (state is spread everywhere, well not everywhere; just )
 
 ## Todo (Long Term)
 
 - separate out logic so we can implement [chessboard.js](https://chessboardjs.com/)
 - compose Queen movement from Rook and Bishop movement
+
+- king
+- castling
+- check
+- forfeit

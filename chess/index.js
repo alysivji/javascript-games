@@ -20,7 +20,7 @@ class HTMLChessManager {
         let squareColor = positionSum % 2 == 0 ? "white" : "black";
         div.classList.add(squareColor);
 
-        chessboardElement.appendChild(div);
+        document.getElementById("html-chessboard").appendChild(div);
       }
     }
   }
@@ -64,5 +64,4 @@ class HTMLChessManager {
   }
 }
 
-const chessboardElement = document.getElementById("chessboard");
 new HTMLChessManager(new Game());
