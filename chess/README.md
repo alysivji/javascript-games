@@ -14,7 +14,6 @@
 
 ## Todo (Long Term)
 
-- separate out logic so we can implement [chessboard.js](https://chessboardjs.com/)
 - compose Queen movement from Rook and Bishop movement
 
 - king

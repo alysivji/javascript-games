@@ -71,14 +71,46 @@ class FancyChessManager {
   }
 
   drawBoard() {
-    let { board, turn } = this.game.currentState;
-    // convert board mapping into object of position: ojbect
-
+    let { board } = this.game.currentState;
     var config = {
       draggable: true,
-      position: 'start',
+      position: this._to_position_object(board),
+      onDragStart: (source, piece, position, orientation) => this.onDragStart(source, piece, position, orientation),
+      onDrop: (source, target) => this.onDrop(source, target),
+      onSnapEnd: () => this.onSnapEnd(),
     }
-    new Chessboard('fancyChess', config);
+    this.display = new Chessboard('fancyChess', config);
+  }
+
+  _to_position_object(board) {
+    let position = {};
+    for (let [pos, piece] of board) {
+      if (piece == "") continue;
+      position[pos] = piece.str;
+    }
+    return position;
+  }
+
+  onDragStart(source, piece, position, orientation) {
+    let { isOver, turn } = this.game.currentState;
+    if (isOver) return false;
+
+    if (turn == "white") {
+      if (piece.search(/^b/) !== -1) return false
+    } else {
+      if (piece.search(/^w/) !== -1) return false
+    }
+  }
+
+  onDrop(source, target) {
+    console.log(source, target);
+    let move = this.game.movePiece(source, target);
+    if (!move) return 'snapback'
+  }
+
+  onSnapEnd() {
+    let { board } = this.game.currentState;
+    this.display.position(this._to_position_object(board));
   }
 }
 

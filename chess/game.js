@@ -35,6 +35,7 @@ class Game {
   get currentState() {
     return {
       board: this.board.squares,
+      isOver: false,
       turn: this.currentTurn.color,
       players: [
         {
@@ -79,7 +80,9 @@ class Game {
       this.board.setSquare(newPosition, pieceToMove);
       pieceToMove.incrementMovesCounter();
       this._nextTurn();
+      return true;
     }
+    return false;
   }
 
   _nextTurn() {
@@ -158,6 +161,7 @@ class Pawn extends Piece {
   constructor(color) {
     super(color);
     this.symbol = color == "white" ? "♙" : "♟";
+    this.str = color == "white" ? "wP" : "bP";
     this.move = color == "white" ? 1 : -1;
   }
 
@@ -210,6 +214,7 @@ class Rook extends Piece {
   constructor(color) {
     super(color);
     this.symbol = color == "white" ? "♖" : "♜";
+    this.str = color == "white" ? "wR" : "bR";
     this.directionVectors = [[1, 0], [-1, 0], [0, 1], [0, -1]];
   }
 
@@ -253,6 +258,7 @@ class Knight extends Piece {
   constructor(color) {
     super(color);
     this.symbol = color == "white" ? "♘" : "♞";
+    this.str = color == "white" ? "wN" : "bN";
     this.possibleMoves = [
       [2, 1], [-2, 1], [2, -1], [-2, -1],
       [1, 2], [-1, 2], [1, -2], [-1, -2],
@@ -293,6 +299,7 @@ class Bishop extends Piece {
   constructor(color) {
     super(color);
     this.symbol = color == "white" ? "♗" : "♝";
+    this.str = color == "white" ? "wB" : "bB";
     this.directionVectors = [[1, 1], [1, -1], [-1, 1], [-1, -1]];
   }
 
@@ -336,6 +343,7 @@ class Queen extends Piece {
   constructor(color) {
     super(color);
     this.symbol = color == "white" ? "♕" : "♛";
+    this.str = color == "white" ? "wQ" : "bQ";
     this.directionVectors = [
       [1, 0], [-1, 0], [0, 1], [0, -1],
       [1, 1], [1, -1], [-1, 1], [-1, -1]
@@ -382,6 +390,7 @@ class King extends Piece {
   constructor(color) {
     super(color);
     this.symbol = color == "white" ? "♔" : "♚";
+    this.str = color == "white" ? "wK" : "bK";
   }
 
   getAvailableMoves() {
