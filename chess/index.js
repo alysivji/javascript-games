@@ -20,7 +20,7 @@ class HTMLChessManager {
         let squareColor = positionSum % 2 == 0 ? "white" : "black";
         div.classList.add(squareColor);
 
-        document.getElementById("html-chessboard").appendChild(div);
+        document.getElementById("htmlChessboard").appendChild(div);
       }
     }
   }
@@ -64,4 +64,23 @@ class HTMLChessManager {
   }
 }
 
-new HTMLChessManager(new Game());
+class FancyChessManager {
+  constructor(game) {
+    this.game = game;
+    this.drawBoard();
+  }
+
+  drawBoard() {
+    let { board, turn } = this.game.currentState;
+    // convert board mapping into object of position: ojbect
+
+    var config = {
+      draggable: true,
+      position: 'start',
+    }
+    new Chessboard('fancyChess', config);
+  }
+}
+
+// new HTMLChessManager(new Game());
+new FancyChessManager(new Game());

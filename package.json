@@ -4,7 +4,9 @@
   "description": "Practice making games.",
   "main": "index.js",
   "dependencies": {
-    "itertools": "^1.6.0"
+    "chessboardjs": "0.0.1",
+    "itertools": "^1.6.0",
+    "parcel-plugin-static-files-copy": "^2.3.1"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.9.6",

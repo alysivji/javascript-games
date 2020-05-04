@@ -12,4 +12,5 @@
 ## Installation Instructions
 
 1. Install [parcel](https://parceljs.org/): `npm install -g parcel-bundler`
+1. Install `npm install parcel-plugin-static-files-copy --only=dev`
 1. `make [game]`
