@@ -17,7 +17,7 @@ class MastermindEngine {
   private _gameState: "IN_PROGRESS" | "PLAYER_WINS" | "GAME_OVER"
 
   code: string[];
-  guessesAllowed: number;
+  private guessesAllowed: number;
 
   decodingBoard: CodeRow[];
   numGuesses: number;
@@ -44,22 +44,18 @@ class MastermindEngine {
 
     const keyPegs = this.evaluateCode(guess);
     this.decodingBoard.push({codePegs: guess, keyPegs})
+    this.numGuesses++;
 
     const playerWins =
       keyPegs.map((item) => item === "black").reduce((a, b) => a && b)
     if (playerWins) this._gameState = "PLAYER_WINS";
 
-    if (this.numGuesses == this.guessesAllowed) this._gameState = "GAME_OVER";
+    if (this.numGuesses === this.guessesAllowed) this._gameState = "GAME_OVER";
 
     return
   }
 
   private evaluateCode(guess: string[]): string[] {
-    if (this.numGuesses > this.guessesAllowed) {
-      throw new Error(`Game over! You've made ${this.guessesAllowed} guesses!`);
-    }
-    this.numGuesses++;
-
     // represents pegs in the code that have been matched
     let matchedPegs: boolean[] = [false, false, false, false];
 

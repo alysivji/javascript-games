@@ -15,7 +15,7 @@ test('make guess -- no correct positions', () => {
   const mastermind = new MastermindEngine(code)
   const guess = ["e", "f", "g", "h"]
 
-  // Act -- guess turn
+  // Act -- guess code
   mastermind.takeTurn(guess)
 
   // Assert -- game state is as expected
@@ -33,7 +33,7 @@ test('player guess code correctly', () => {
   const mastermind = new MastermindEngine(code)
   const guess = code.slice()
 
-  // Act -- guess turn
+  // Act -- guess code
   mastermind.takeTurn(guess)
 
   // Assert -- game state is as expected
@@ -51,7 +51,7 @@ test('player\'s guess has a correct color in the right position', () => {
   const mastermind = new MastermindEngine(code)
   const guess = ["a", "e", "f", "g"]
 
-  // Act -- guess turn
+  // Act -- guess code
   mastermind.takeTurn(guess)
 
   // Assert -- game state is as expected
@@ -69,7 +69,7 @@ test('player\'s guess has a correct color in the wrong position', () => {
   const mastermind = new MastermindEngine(code)
   const guess = ["e", "a", "f", "g"]
 
-  // Act -- guess turn
+  // Act -- guess code
   mastermind.takeTurn(guess)
 
   // Assert -- game state is as expected
@@ -87,7 +87,7 @@ test('player\'s guess results in 1 black and 1 white peg', () => {
   const mastermind = new MastermindEngine(code)
   const guess = ["a", "c", "f", "g"]
 
-  // Act -- guess turn
+  // Act -- guess code
   mastermind.takeTurn(guess)
 
   // Assert -- game state is as expected
@@ -99,5 +99,30 @@ test('player\'s guess results in 1 black and 1 white peg', () => {
   });
 });
 
-// test that a game the player wins cannot be interactd with
-// test that a game that is over cannot be interacted with
+test('game the player wins cannot be interactd with', () => {
+  // Arrange -- set up game the player has won
+  const code = ["a", "b", "c", "d"]
+  const mastermind = new MastermindEngine(code)
+  const guess = ["a", "b", "c", "d"]
+  mastermind.takeTurn(guess)
+  expect(mastermind.gameState).toBe("PLAYER_WINS");
+
+  // Act / Assert -- make another guess
+  expect(() => {
+    mastermind.takeTurn(guess);
+  }).toThrow();
+});
+
+test('game the player wins cannot be interactd with', () => {
+  // Arrange -- set up game that is over
+  const code = ["a", "b", "c", "d"]
+  const mastermind = new MastermindEngine(code, 1)
+  const guess = ["d", "b", "c", "d"]
+  mastermind.takeTurn(guess)
+  expect(mastermind.gameState).toBe("GAME_OVER");
+
+  // Act / Assert -- make another guess
+  expect(() => {
+    mastermind.takeTurn(guess);
+  }).toThrow();
+});
