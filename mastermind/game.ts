@@ -7,27 +7,14 @@ Current implementation:
   - codebreaker -- human player
 */
 
-const CODE_PEGS = {
-  heart: "♥️",
-  diamond: "♦️",
-  spade: "♠️",
-  club: "♣️",
-  pawn: "♟",
-  white: "🏐",
-};
-
-const KEY_PEGS = {
-  black: "⬛",
-  white: "⬜",
-};
-
 type CodeRow = {
   codePegs: string[];
   keyPegs: string[];
 };
 
 class MastermindEngine {
-  gameState: "IN_PROGRESS" | "PLAYER_WINS" | "GAME_OVER"
+  // TODO: use enums here
+  private _gameState: "IN_PROGRESS" | "PLAYER_WINS" | "GAME_OVER"
 
   code: string[];
   guessesAllowed: number;
@@ -35,8 +22,12 @@ class MastermindEngine {
   decodingBoard: CodeRow[];
   numGuesses: number;
 
+  get gameState() {
+    return this._gameState
+  }
+
   constructor(code: string[], guessesAllowed = 8) {
-    this.gameState = "IN_PROGRESS"
+    this._gameState = "IN_PROGRESS"
 
     // TODO: include code is valid
     this.code = code;
@@ -46,15 +37,19 @@ class MastermindEngine {
     this.numGuesses = 0;
   }
 
-  turn(guess: string[]): void {
+  takeTurn(guess: string[]): void {
+    if (this._gameState !== "IN_PROGRESS") {
+      throw new Error(`Error. Game state is ${this._gameState}`);
+    }
+
     const keyPegs = this.evaluateCode(guess);
+    this.decodingBoard.push({codePegs: guess, keyPegs})
 
     const playerWins =
-      keyPegs.map((item) => item === KEY_PEGS["black"]).filter(Boolean)
-        .length === this.guessesAllowed;
-    if (playerWins) this.gameState = "PLAYER_WINS";
+      keyPegs.map((item) => item === "black").reduce((a, b) => a && b)
+    if (playerWins) this._gameState = "PLAYER_WINS";
 
-    if (this.numGuesses == this.guessesAllowed) this.gameState = "GAME_OVER";
+    if (this.numGuesses == this.guessesAllowed) this._gameState = "GAME_OVER";
 
     return
   }
@@ -92,8 +87,8 @@ class MastermindEngine {
     });
 
     // fill keyPegs with result
-    const fullMatch = Array(numPegsCorrect).fill(KEY_PEGS["black"]);
-    const partialMatch = Array(numPegsColorCorrect).fill(KEY_PEGS["white"]);
+    const fullMatch = Array(numPegsCorrect).fill("black");
+    const partialMatch = Array(numPegsColorCorrect).fill("white");
     const noMatch = Array(4 - (numPegsCorrect + numPegsColorCorrect)).fill(
       undefined
     );
@@ -102,3 +97,5 @@ class MastermindEngine {
     return keyPegs;
   }
 }
+
+export { MastermindEngine }
