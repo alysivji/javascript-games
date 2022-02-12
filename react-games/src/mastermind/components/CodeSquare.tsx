@@ -10,7 +10,7 @@ const CodeSquare = ({}: Props) => {
 
   return (
     <div
-      className="codePegSquare"
+      className="codeSquare"
       onClick={() => setShowSelectorBox(!showSelectorBox)}
     >
       <div>placeholder</div>

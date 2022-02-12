@@ -6,7 +6,7 @@
   visibility: visible;
 }
 
-.codePegSquare {
+.codeSquare {
   position: relative;
   float: left;
   width: 200px;
@@ -17,4 +17,9 @@
   position: absolute;
   bottom: 0px;
   right: 10px;
+}
+
+.codeRow {
+  display: inline-block;
+  height: 50px;
 }

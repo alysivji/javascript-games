@@ -9,7 +9,7 @@ const CodeRow = ({}: Props) => {
   const [showSelectorBox, setShowSelectorBox] = useState(false);
 
   return (
-    <div>
+    <div className="codeRow">
       <CodeSquare />
       <CodeSquare />
       <CodeSquare />

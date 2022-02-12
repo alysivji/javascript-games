@@ -1,10 +1,10 @@
 import "./App.css";
-import DecodingBoard from "./mastermind/components/DecodingBoard";
+import FullGame from "./mastermind/components/FullGame";
 
 function App() {
   return (
     <div className="App">
-      <DecodingBoard />
+      <FullGame numGuessesAllowed={8} />
     </div>
   );
 }
