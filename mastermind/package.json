@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npx jest test",
-    "start": "ts-node game.ts"
+    "start": "ts-node game.ts",
+    "cli": "ts-node cli_start.ts"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +20,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.17.2",
-    "babel-jest": "^27.5.1"
+    "babel-jest": "^27.5.1",
+    "readline-sync": "^1.4.10"
   }
 }
