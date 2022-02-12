@@ -1,5 +1,5 @@
-const readlineSync = require('readline-sync');
-const { MastermindEngine } = require('./game')
+import readlineSync from 'readline-sync';
+import { MastermindEngine } from './game'
 
 console.log('Computer is selecting a random code')
 // TODO randomize this
