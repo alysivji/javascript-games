@@ -1,16 +1,20 @@
-# Vanilla JavaScript Games
+# JavaScript Games
+
+Practicing my JavaScript / TypeScript skills by making games.
 
 ## Games List
+
+### Vanilla JS Games
 
 | __Game__             | __Description__
 | --------             | ---------------
 | chess                | 2 player chess (Work-In-Progress)
-| mastermind           | Mastermind via CLI
 | pong (keyboard)      | Pong with a keyboard
 | pong (mouse)         | Pong with a mouse
 | tic-tac-toe          | Tac-Tac-Toe
 
-## Installation Instructions
+### TypeScript Games
 
-1. `npm install`
-1. `make [game]`
+| __Game__              | __Description__
+| --------              | ---------------
+| mastermind            | Mastermind via CLI

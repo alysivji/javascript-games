@@ -4,7 +4,7 @@
 
 1. Set up node via nvm
 1. `npm install`
-1. `npm start`
+1. `npm run cli`
 
 ## Creating project from scratch
 
