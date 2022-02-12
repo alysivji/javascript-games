@@ -1,4 +1,4 @@
-import PegSelector from "./PegSelector";
+import CodeSquare from "./CodeSquare";
 
 type Props = {
 };
@@ -6,7 +6,7 @@ type Props = {
 function DecodingBoard({ }: Props) {
 
   return (
-    <PegSelector />
+    <CodeSquare />
   )
 }
 

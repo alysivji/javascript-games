@@ -1,12 +1,12 @@
-import { useState } from "react";
-
+import "./styles.css";
 import { CODE_PEGS } from "../constants";
 
-type Props = {};
+type Props = {
+  visible: boolean;
+  passColorSelectedData: Function;
+};
 
-const PegSelector = ({ }: Props) => {
-  const [colorSelected, setColorSelected] = useState("");
-
+const PegSelector = ({ visible, passColorSelectedData }: Props) => {
   const pegs = Object.entries(CODE_PEGS).map(([pegColor, pegSvg]) => {
     return (
       <img
@@ -14,10 +14,8 @@ const PegSelector = ({ }: Props) => {
         key={pegColor}
         width="30"
         height="30"
-        onClick={() => {
-          console.log(colorSelected);
-          setColorSelected(pegColor);
-        }}
+        onClick={() => passColorSelectedData(pegColor)}
+        className={visible ? "visible" : "hidden"}
       ></img>
     );
   });
