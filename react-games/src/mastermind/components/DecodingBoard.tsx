@@ -6,7 +6,7 @@ type Props = {
 function DecodingBoard({ }: Props) {
 
   return (
-    <PegSelector text="test" />
+    <PegSelector />
   )
 }
 
