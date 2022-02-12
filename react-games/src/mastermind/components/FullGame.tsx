@@ -8,7 +8,7 @@ function FullGame({ numGuessesAllowed }: Props) {
   const gameBoard = Array(numGuessesAllowed)
     .fill("")
     .map((_, index) => {
-      return <CodeRow key={index} />;
+      return <CodeRow key={index} index={index + 1} />;
     });
 
   return (
