@@ -5,3 +5,16 @@
 .visible {
   visibility: visible;
 }
+
+.codePegSquare {
+  position: relative;
+  float: left;
+  width: 200px;
+  height: 40px;
+}
+
+.colorSelector {
+  position: absolute;
+  bottom: 0px;
+  right: 10px;
+}

@@ -15,12 +15,11 @@ const PegSelector = ({ visible, passColorSelectedData }: Props) => {
         width="30"
         height="30"
         onClick={() => passColorSelectedData(pegColor)}
-        className={visible ? "visible" : "hidden"}
       ></img>
     );
   });
 
-  return <div>{pegs}</div>;
+  return <div className={`colorSelector ${visible ? "visible" : "hidden"}`}>{pegs}</div>;
 };
 
 export default PegSelector;

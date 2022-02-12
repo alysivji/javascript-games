@@ -1,13 +1,14 @@
-import CodeSquare from "./CodeSquare";
+import CodeRow from "./CodeRow"
 
-type Props = {
-};
+type Props = {};
 
-function DecodingBoard({ }: Props) {
-
+function DecodingBoard({}: Props) {
   return (
-    <CodeSquare />
-  )
+    <div>
+      <h1>MasterMind</h1>
+      <CodeRow />
+    </div>
+  );
 }
 
 export default DecodingBoard;

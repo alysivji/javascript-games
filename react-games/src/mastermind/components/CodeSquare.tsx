@@ -9,13 +9,17 @@ const CodeSquare = ({}: Props) => {
   const [showSelectorBox, setShowSelectorBox] = useState(false);
 
   return (
-    <div>
+    <div
+      className="codePegSquare"
+      onClick={() => setShowSelectorBox(!showSelectorBox)}
+    >
+      <div>placeholder</div>
+      {/* todo make this a box we cann show and then make it visible onclick */}
+      <div>Selected Color: {colorSelected}</div>
       <PegSelector
         visible={showSelectorBox}
         passColorSelectedData={setColorSelected}
       />
-      <div onClick={() => setShowSelectorBox(!showSelectorBox)}>value</div>
-      <div>Selected Color: {colorSelected}</div>
     </div>
   );
 };
