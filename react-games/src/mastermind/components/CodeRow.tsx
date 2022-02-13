@@ -3,21 +3,19 @@ import { useState } from "react";
 import CodeSquare from "./CodeSquare";
 
 type Props = {
-  index: number;
+  guessNumber: number;
+  enableInteraction: boolean
 };
 
-const CodeRow = ({ index: key }: Props) => {
-  const [colorSelected, setColorSelected] = useState("");
-  const [showSelectorBox, setShowSelectorBox] = useState(false);
-
+const CodeRow = ({ guessNumber, enableInteraction }: Props) => {
   return (
     <div>
-      <h3>{key}</h3>
+      <h3>{guessNumber}</h3>
       <div className="codeRow">
-        <CodeSquare />
-        <CodeSquare />
-        <CodeSquare />
-        <CodeSquare />
+        <CodeSquare enableInteraction={enableInteraction} />
+        <CodeSquare enableInteraction={enableInteraction} />
+        <CodeSquare enableInteraction={enableInteraction} />
+        <CodeSquare enableInteraction={enableInteraction}/>
       </div>
     </div>
   );

@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import CodeRow from "./CodeRow";
 
 type Props = {
@@ -5,10 +7,18 @@ type Props = {
 };
 
 function FullGame({ numGuessesAllowed }: Props) {
+  const [currentGuessNumber, setCurrentGuessNumber] = useState(0);
+
   const gameBoard = Array(numGuessesAllowed)
     .fill("")
     .map((_, index) => {
-      return <CodeRow key={index} index={index + 1} />;
+      return (
+        <CodeRow
+          key={index}
+          guessNumber={index + 1}
+          enableInteraction={currentGuessNumber === index}
+        />
+      );
     });
 
   return (

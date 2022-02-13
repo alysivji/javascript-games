@@ -2,16 +2,21 @@ import { useState } from "react";
 
 import PegSelector from "./PegSelector";
 
-type Props = {};
+type Props = {
+  enableInteraction: boolean;
+};
 
-const CodeSquare = ({}: Props) => {
+const CodeSquare = ({ enableInteraction }: Props) => {
   const [colorSelected, setColorSelected] = useState("");
   const [showSelectorBox, setShowSelectorBox] = useState(false);
 
   return (
     <div
       className="codeSquare"
-      onClick={() => setShowSelectorBox(!showSelectorBox)}
+      onClick={() => {
+        if (!enableInteraction) return
+        setShowSelectorBox(!showSelectorBox)
+      }}
     >
       <div>placeholder</div>
       {/* todo make this a box we cann show and then make it visible onclick */}
