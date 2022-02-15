@@ -1,29 +1,46 @@
 import { useState } from "react";
 
+import { CODE_PEGS } from "../constants";
 import PegSelector from "./PegSelector";
 
 type Props = {
+  index: number;
   enableInteraction: boolean;
+  selectedColor: string;
+  onColorSection: Function
 };
 
-const CodeSquare = ({ enableInteraction }: Props) => {
-  const [colorSelected, setColorSelected] = useState("");
+const CodeSquare = ({ index, enableInteraction, selectedColor, onColorSection }: Props) => {
   const [showSelectorBox, setShowSelectorBox] = useState(false);
+
+  const handleColorSelection = (color: string) => {
+    onColorSection(index, color)
+  }
 
   return (
     <div
       className="codeSquare"
       onClick={() => {
-        if (!enableInteraction) return
-        setShowSelectorBox(!showSelectorBox)
+        if (!enableInteraction) return;
+        setShowSelectorBox(!showSelectorBox);
+      }}
+      onMouseEnter={() => {
+        if (!enableInteraction) return;
+        setShowSelectorBox(true);
+      }}
+      onMouseLeave={() => {
+        if (!enableInteraction) return;
+        setShowSelectorBox(false);
       }}
     >
-      <div>placeholder</div>
-      {/* todo make this a box we cann show and then make it visible onclick */}
-      <div>Selected Color: {colorSelected}</div>
+      {selectedColor === "" ? (
+        <div className="emptyBox"></div>
+      ) : (
+        <img src={CODE_PEGS.get(selectedColor)} alt={selectedColor} width="100%" height="100%" />
+      )}
       <PegSelector
         visible={showSelectorBox}
-        passColorSelectedData={setColorSelected}
+        onColorSelection={handleColorSelection}
       />
     </div>
   );

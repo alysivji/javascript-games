@@ -3,18 +3,19 @@ import { CODE_PEGS } from "../constants";
 
 type Props = {
   visible: boolean;
-  passColorSelectedData: Function;
+  onColorSelection: Function;
 };
 
-const PegSelector = ({ visible, passColorSelectedData }: Props) => {
-  const pegs = Object.entries(CODE_PEGS).map(([pegColor, pegSvg]) => {
+const PegSelector = ({ visible, onColorSelection }: Props) => {
+  const pegs = Array.from(CODE_PEGS.entries()).map(([pegColor, pegSvg]) => {
     return (
       <img
         src={pegSvg}
+        alt={pegColor}
         key={pegColor}
         width="30"
         height="30"
-        onClick={() => passColorSelectedData(pegColor)}
+        onClick={() => onColorSelection(pegColor)}
       />
     );
   });

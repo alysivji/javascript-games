@@ -6,14 +6,14 @@ import white_peg from './images/white_dot.svg';
 import yellow_peg from './images/yellow_dot.svg';
 
 
-const CODE_PEGS = {
-  "black": black_peg,
-  "blue": blue_peg,
-  "green": green_peg,
-  "red": red_peg,
-  "white": white_peg,
-  "yellow": yellow_peg,
-}
+const CODE_PEGS: Map<string, string> = new Map([
+  ["black", black_peg],
+  ["blue", blue_peg],
+  ["green", green_peg],
+  ["red", red_peg],
+  ["white", white_peg],
+  ["yellow", yellow_peg],
+]);
 
 const KEY_PEGS = {
   "black": "black",

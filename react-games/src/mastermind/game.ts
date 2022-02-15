@@ -30,6 +30,7 @@ class MastermindEngine {
     this._gameState = "IN_PROGRESS"
 
     // TODO: include code is valid
+    // maybe add the random code generation logic here
     this.code = code;
     this.guessesAllowed = guessesAllowed;
 
@@ -72,7 +73,7 @@ class MastermindEngine {
 
       // does the guess peg match any of the unmatched pegs
       const remainingCodePegs = this.code.map((value, index) => {
-        if (matchedPegs[index] === false) return value;
+        return matchedPegs[index] === false ? value : undefined;
       });
       for (let i = 0; i < remainingCodePegs.length; i++) {
         if (peg !== remainingCodePegs[i]) continue;
