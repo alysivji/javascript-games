@@ -38,7 +38,9 @@ class MastermindEngine {
     this.numGuesses = 0;
   }
 
-  takeTurn(guess: string[]): void {
+  takeTurn(guess: string[]): string[] {
+    // takes guess and retuns pegs solution
+
     if (this._gameState !== "IN_PROGRESS") {
       throw new Error(`Error. Game state is ${this._gameState}`);
     }
@@ -53,7 +55,7 @@ class MastermindEngine {
 
     if (this.numGuesses === this.guessesAllowed) this._gameState = "GAME_OVER";
 
-    return
+    return keyPegs;
   }
 
   private evaluateCode(guess: string[]): string[] {

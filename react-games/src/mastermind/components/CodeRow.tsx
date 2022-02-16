@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import Peg from './CodePeg';
 import CodeSquare from "./CodeSquare";
 
 type Props = {
@@ -9,9 +10,8 @@ type Props = {
 };
 
 const CodeRow = ({ guessNumber, enableInteraction, checkGuess }: Props) => {
-  // this element needs to know all of the state of the square below
-  // using this information; we should interact with the mastermind session
   const [code, setCode] = useState(Array(4).fill(""));
+  const [pegs, setPegs] = useState(Array(4).fill(""));
 
   const handleColorSelection = (index: number, color: string) => {
     const newCode = code.slice();
@@ -19,7 +19,11 @@ const CodeRow = ({ guessNumber, enableInteraction, checkGuess }: Props) => {
     setCode(newCode);
   }
 
-  const codeRow = code.map((value, index) => {
+  const codeRow = code.map((_, index) => {
+    return <Peg value={pegs[index]} />
+  });
+
+  const pegRow = pegs.map((_, index) => {
     return (
       <CodeSquare
         enableInteraction={enableInteraction}
@@ -34,17 +38,18 @@ const CodeRow = ({ guessNumber, enableInteraction, checkGuess }: Props) => {
   return (
     <div>
       <h3>{guessNumber}</h3>
+      <div className="keyPegs">{pegRow}</div>
       <div className="codeRow">{codeRow}</div>
       {enableInteraction && (
         <button
           onClick={() => {
-            checkGuess(code);
+            const result = checkGuess(code);
+            setPegs(result)
           }}
         >
           Click Me
         </button>
       )}
-      <div className="keyPegs">{/* todo */}</div>
     </div>
   );
 };

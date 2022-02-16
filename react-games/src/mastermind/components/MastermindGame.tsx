@@ -7,14 +7,14 @@ type Props = {
   numGuessesAllowed: number;
 };
 
-function FullGame({ numGuessesAllowed }: Props) {
+function MastermindGame({ numGuessesAllowed }: Props) {
   // come up with random code here
   const code = ["white", "white", "white", "white"];
   const [mastermind, setMastermind] = useState(new MastermindEngine(code));
   const [currentGuessNumber, setCurrentGuessNumber] = useState(0);
 
   const checkGuess = (code: string[]) => {
-    mastermind.takeTurn(code);
+    const keyPegs = mastermind.takeTurn(code);
     setMastermind(mastermind);
     setCurrentGuessNumber(mastermind.numGuesses);
 
@@ -23,6 +23,8 @@ function FullGame({ numGuessesAllowed }: Props) {
     } else if (mastermind.gameState === "GAME_OVER") {
       alert("You lost! Try to play again!");
     }
+
+    return keyPegs;
   };
 
   const gameBoard = Array(numGuessesAllowed)
@@ -49,4 +51,4 @@ function FullGame({ numGuessesAllowed }: Props) {
   );
 }
 
-export default FullGame;
+export default MastermindGame;

@@ -1,10 +1,10 @@
 import "./App.css";
-import FullGame from "./mastermind/components/FullGame";
+import MastermindGame from "./mastermind/components/MastermindGame";
 
 function App() {
   return (
     <div className="App">
-      <FullGame numGuessesAllowed={8} />
+      <MastermindGame numGuessesAllowed={8} />
     </div>
   );
 }
