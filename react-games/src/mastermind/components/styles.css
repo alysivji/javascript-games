@@ -1,0 +1,37 @@
+.hidden {
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.codeSquare {
+  position: relative;
+  float: left;
+  width: 40px;
+  height: 40px;
+}
+
+.emptyBox {
+  border: 1px solid black;
+  position: relative;
+  float: left;
+  width: 40px;
+  height: 40px;
+}
+
+.colorSelector {
+  position: absolute;
+  bottom: 40px;
+  right: 0px;
+  width: 200px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: aliceblue;
+}
+
+.codeRow {
+  display: inline-block;
+  height: 50px;
+}
