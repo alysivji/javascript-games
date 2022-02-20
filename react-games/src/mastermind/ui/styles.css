@@ -1,0 +1,42 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.mastermind-container {
+  background-color: #fff;
+  width: 400px;
+  margin: 10px auto;
+}
+
+.row {
+  height: 2em;
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+}
+
+.code-container {
+  display: flex;
+  justify-content: space-between;
+  flex: 12;
+}
+
+.code {
+  width: 100%;
+  border: 1px solid #000;
+}
+
+.peg-board {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.peg {
+  border: 1px solid #000;
+  box-sizing: border-box;
+  flex: 50%;
+}
