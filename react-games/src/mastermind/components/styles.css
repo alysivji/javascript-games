@@ -1,3 +1,9 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .mastermind-container {
   background-color: #fff;
   width: 250px;
@@ -48,6 +54,13 @@
 
 .black {
   background-color: #000
+}
+
+.solution-row {
+  display: flex;
+  background-color: #85CEA8;
+  justify-content: space-between;
+  padding: 10px;
 }
 
 /* old */
