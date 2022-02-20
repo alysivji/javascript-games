@@ -14,7 +14,7 @@ type CodeRow = {
 
 class MastermindEngine {
   // TODO: use enums here
-  private _gameState: "IN_PROGRESS" | "PLAYER_WINS" | "GAME_OVER"
+  private _gameState: "IN_PROGRESS" | "PLAYER_WINS" | "GAME_OVER";
 
   code: string[];
   private guessesAllowed: number;
@@ -23,14 +23,11 @@ class MastermindEngine {
   numGuesses: number;
 
   get gameState() {
-    return this._gameState
+    return this._gameState;
   }
 
   constructor(code: string[], guessesAllowed = 8) {
-    this._gameState = "IN_PROGRESS"
-
-    // TODO: include code is valid
-    // maybe add the random code generation logic here
+    this._gameState = "IN_PROGRESS";
     this.code = code;
     this.guessesAllowed = guessesAllowed;
 
@@ -46,11 +43,12 @@ class MastermindEngine {
     }
 
     const keyPegs = this.evaluateCode(guess);
-    this.decodingBoard.push({codePegs: guess, keyPegs})
+    this.decodingBoard.push({ codePegs: guess, keyPegs });
     this.numGuesses++;
 
-    const playerWins =
-      keyPegs.map((item) => item === "black").reduce((a, b) => a && b)
+    const playerWins = keyPegs
+      .map((item) => item === "black")
+      .reduce((a, b) => a && b);
     if (playerWins) this._gameState = "PLAYER_WINS";
 
     if (this.numGuesses === this.guessesAllowed) this._gameState = "GAME_OVER";
@@ -97,4 +95,4 @@ class MastermindEngine {
   }
 }
 
-export { MastermindEngine }
+export { MastermindEngine };

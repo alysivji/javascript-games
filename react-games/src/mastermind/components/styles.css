@@ -1,24 +1,76 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.mastermind-container {
+  background-color: #fff;
+  width: 250px;
+  margin: 10px auto;
+}
+
+.mastermind-board {
+  background-color: #BB8464
+}
+
+.guess-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+  border: 1px solid #000;
+}
+
+.guess-code {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.code-square {
+  position: relative;
+  width: 25%;
+  border: 1px solid #000;
+  height: 40px;
+}
+
+.guess-pegs {
+  display: flex;
+  flex-wrap: wrap;
+  border-left: 1px solid #000;
+}
+
+.peg {
+  border: 1px solid #000;
+  box-sizing: border-box;
+  flex: 33%;
+  width: 4px;
+  margin: 3px;
+}
+
+.white {
+  background-color: #fff
+}
+
+.black {
+  background-color: #000
+}
+
+.solution-row {
+  display: flex;
+  background-color: #85CEA8;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+/* old */
+
 .hidden {
   visibility: hidden;
 }
 
 .visible {
   visibility: visible;
-}
-
-.codeSquare {
-  position: relative;
-  float: left;
-  width: 40px;
-  height: 40px;
-}
-
-.emptyBox {
-  border: 1px solid black;
-  position: relative;
-  float: left;
-  width: 40px;
-  height: 40px;
 }
 
 .colorSelector {
@@ -28,10 +80,5 @@
   width: 200px;
   border: 1px solid black;
   border-radius: 5px;
-  background-color: aliceblue;
-}
-
-.codeRow {
-  display: inline-block;
-  height: 50px;
+  background-color: rgb(123, 148, 170);
 }

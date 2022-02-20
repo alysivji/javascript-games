@@ -19,7 +19,7 @@ const CodeSquare = ({ index, enableInteraction, selectedColor, onColorSection }:
 
   return (
     <div
-      className="codeSquare"
+      className="code-square"
       onClick={() => {
         if (!enableInteraction) return;
         setShowSelectorBox(!showSelectorBox);
@@ -34,7 +34,7 @@ const CodeSquare = ({ index, enableInteraction, selectedColor, onColorSection }:
       }}
     >
       {selectedColor === "" ? (
-        <div className="emptyBox"></div>
+        <div className="empty-box"></div>
       ) : (
         <img src={CODE_PEGS.get(selectedColor)} alt={selectedColor} width="100%" height="100%" />
       )}

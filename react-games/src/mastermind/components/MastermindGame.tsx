@@ -1,16 +1,30 @@
 import { useState } from "react";
-import { MastermindEngine } from "../game";
 
 import CodeRow from "./CodeRow";
+import Solution from "./Solution";
+import { CODE_PEGS } from "../constants";
+import { MastermindEngine } from "../game";
+
+const CODE_COLORS = Array.from(CODE_PEGS.keys());
 
 type Props = {
   numGuessesAllowed: number;
 };
 
+const generate_random_code= () => {
+  const generatedCode: string[] = [];
+  for (let i = 0; i < 4; i++) {
+    const randomColor =
+      CODE_COLORS[Math.floor(Math.random() * CODE_COLORS.length)];
+    generatedCode.push(randomColor)
+  }
+  return generatedCode
+}
+
 function MastermindGame({ numGuessesAllowed }: Props) {
   // come up with random code here
-  const code = ["white", "white", "white", "white"];
-  const [mastermind, setMastermind] = useState(new MastermindEngine(code));
+  const [solution, _] = useState(generate_random_code())
+  const [mastermind, setMastermind] = useState(new MastermindEngine(solution));
   const [currentGuessNumber, setCurrentGuessNumber] = useState(0);
 
   const checkGuess = (code: string[]) => {
@@ -44,9 +58,12 @@ function MastermindGame({ numGuessesAllowed }: Props) {
     });
 
   return (
-    <div>
+    <div className="mastermind-container">
       <h1>MasterMind</h1>
-      <div className="gameBoard">{gameBoard}</div>
+      <div className="mastermind-board">{gameBoard}</div>
+      {/* NOTE: the submit button is screwing stuff up */}
+      {/* Have a div overlaying the solution */}
+      <Solution code={solution} />
     </div>
   );
 }

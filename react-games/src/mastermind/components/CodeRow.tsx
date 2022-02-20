@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import Peg from './CodePeg';
+import Peg from './Peg';
 import CodeSquare from "./CodeSquare";
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
   checkGuess: Function;
 };
 
-const CodeRow = ({ guessNumber, enableInteraction, checkGuess }: Props) => {
+const CodeRow = ({ enableInteraction, checkGuess }: Props) => {
   const [code, setCode] = useState(Array(4).fill(""));
   const [pegs, setPegs] = useState(Array(4).fill(""));
 
@@ -20,10 +20,6 @@ const CodeRow = ({ guessNumber, enableInteraction, checkGuess }: Props) => {
   }
 
   const codeRow = code.map((_, index) => {
-    return <Peg value={pegs[index]} />
-  });
-
-  const pegRow = pegs.map((_, index) => {
     return (
       <CodeSquare
         enableInteraction={enableInteraction}
@@ -35,22 +31,34 @@ const CodeRow = ({ guessNumber, enableInteraction, checkGuess }: Props) => {
     );
   });
 
+  const pegRow = pegs.map((_, index) => {
+    return <Peg value={pegs[index]} key={index} />
+  });
+
   return (
-    <div>
-      <h3>{guessNumber}</h3>
-      <div className="keyPegs">{pegRow}</div>
-      <div className="codeRow">{codeRow}</div>
-      {enableInteraction && (
-        <button
-          onClick={() => {
-            const result = checkGuess(code);
-            setPegs(result)
-          }}
-        >
-          Click Me
-        </button>
-      )}
-    </div>
+    <>
+      <div className="guess-row">
+        <div className="guess-code">{codeRow}</div>
+        <div className="guess-pegs">{pegRow}</div>
+      </div>
+
+      <div className="submitGuess">
+        {enableInteraction && (
+          <button
+            onClick={() => {
+              if (code.includes("")) {
+                alert("Need to fill out all 4 squares")
+                return
+              }
+              const result = checkGuess(code);
+              setPegs(result)
+            }}
+          >
+            Submit
+          </button>
+        )}
+      </div>
+    </>
   );
 };
 
