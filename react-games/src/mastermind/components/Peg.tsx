@@ -3,7 +3,7 @@ type Props = {
 };
 
 const Peg = ({ value }: Props) => {
-  return <div className={value}>{value}</div>
+  return <div className={`${value} peg`}>{value}</div>
 };
 
 export default Peg;

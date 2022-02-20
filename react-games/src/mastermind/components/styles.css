@@ -13,14 +13,6 @@
   height: 40px;
 }
 
-.emptyBox {
-  border: 1px solid black;
-  position: relative;
-  float: left;
-  width: 40px;
-  height: 40px;
-}
-
 .colorSelector {
   position: absolute;
   bottom: 40px;
@@ -31,7 +23,48 @@
   background-color: aliceblue;
 }
 
-.codeRow {
-  display: inline-block;
-  height: 50px;
+/* new from here */
+
+.mastermindContainer {
+  background-color: #fff;
+  width: 250px;
+  margin: 10px auto;
+}
+
+.guessRow {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+  border: 1px solid #000;
+}
+
+.codeContainer {
+  display: flex;
+  justify-content: space-between;
+  flex: 12;
+  border: 1px solid #000;
+}
+
+.solutionPegs {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+  border: 1px solid #000;
+  margin-left: auto;
+}
+
+.peg {
+  border: 1px solid #000;
+  box-sizing: border-box;
+  flex: 50%;
+  width: 10px;
+}
+
+.codeSquare {
+  width: 100%;
+  border: 1px solid #000
+}
+
+.submitGuess {
+  margin-right: auto;
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import Peg from './CodePeg';
+import Peg from './Peg';
 import CodeSquare from "./CodeSquare";
 
 type Props = {
@@ -19,11 +19,11 @@ const CodeRow = ({ guessNumber, enableInteraction, checkGuess }: Props) => {
     setCode(newCode);
   }
 
-  const codeRow = code.map((_, index) => {
+  const pegRow = pegs.map((_, index) => {
     return <Peg value={pegs[index]} />
   });
 
-  const pegRow = pegs.map((_, index) => {
+  const codeRow = code.map((_, index) => {
     return (
       <CodeSquare
         enableInteraction={enableInteraction}
@@ -36,20 +36,22 @@ const CodeRow = ({ guessNumber, enableInteraction, checkGuess }: Props) => {
   });
 
   return (
-    <div>
-      <h3>{guessNumber}</h3>
-      <div className="keyPegs">{pegRow}</div>
-      <div className="codeRow">{codeRow}</div>
-      {enableInteraction && (
-        <button
-          onClick={() => {
-            const result = checkGuess(code);
-            setPegs(result)
-          }}
-        >
-          Click Me
-        </button>
-      )}
+    <div className="guessRow">
+      {/* <h3>{guessNumber}</h3> */}
+      <div className="submitGuess">
+        {enableInteraction && (
+          <button
+            onClick={() => {
+              const result = checkGuess(code);
+              setPegs(result)
+            }}
+          >
+            Submit
+          </button>
+        )}
+      </div>
+      <div className="codeContainer">{codeRow}</div>
+      <div className="solutionPegs">{pegRow}</div>
     </div>
   );
 };
