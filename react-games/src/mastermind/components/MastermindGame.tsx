@@ -44,9 +44,9 @@ function MastermindGame({ numGuessesAllowed }: Props) {
     });
 
   return (
-    <div>
+    <div className="mastermind-container">
       <h1>MasterMind</h1>
-      <div className="mastermindContainer">{gameBoard}</div>
+      <div className="mastermind-board">{gameBoard}</div>
     </div>
   );
 }

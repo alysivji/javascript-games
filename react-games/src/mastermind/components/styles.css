@@ -1,16 +1,63 @@
+.mastermind-container {
+  background-color: #fff;
+  width: 250px;
+  margin: 10px auto;
+}
+
+.mastermind-board {
+  background-color: #BB8464
+}
+
+.guess-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+  border: 1px solid #000;
+}
+
+.guess-code {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.code-square {
+  position: relative;
+  width: 25%;
+  border: 1px solid #000;
+  height: 40px;
+}
+
+.guess-pegs {
+  display: flex;
+  flex-wrap: wrap;
+  border-left: 1px solid #000;
+}
+
+.peg {
+  border: 1px solid #000;
+  box-sizing: border-box;
+  flex: 33%;
+  width: 4px;
+  margin: 3px;
+}
+
+.white {
+  background-color: #fff
+}
+
+.black {
+  background-color: #000
+}
+
+/* old */
+
 .hidden {
   visibility: hidden;
 }
 
 .visible {
   visibility: visible;
-}
-
-.codeSquare {
-  position: relative;
-  float: left;
-  width: 40px;
-  height: 40px;
 }
 
 .colorSelector {
@@ -20,51 +67,5 @@
   width: 200px;
   border: 1px solid black;
   border-radius: 5px;
-  background-color: aliceblue;
-}
-
-/* new from here */
-
-.mastermindContainer {
-  background-color: #fff;
-  width: 250px;
-  margin: 10px auto;
-}
-
-.guessRow {
-  display: flex;
-  justify-content: space-between;
-  margin: 20px;
-  border: 1px solid #000;
-}
-
-.codeContainer {
-  display: flex;
-  justify-content: space-between;
-  flex: 12;
-  border: 1px solid #000;
-}
-
-.solutionPegs {
-  display: flex;
-  flex-wrap: wrap;
-  flex: 1;
-  border: 1px solid #000;
-  margin-left: auto;
-}
-
-.peg {
-  border: 1px solid #000;
-  box-sizing: border-box;
-  flex: 50%;
-  width: 10px;
-}
-
-.codeSquare {
-  width: 100%;
-  border: 1px solid #000
-}
-
-.submitGuess {
-  margin-right: auto;
+  background-color: rgb(123, 148, 170);
 }

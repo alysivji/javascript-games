@@ -19,10 +19,6 @@ const CodeRow = ({ guessNumber, enableInteraction, checkGuess }: Props) => {
     setCode(newCode);
   }
 
-  const pegRow = pegs.map((_, index) => {
-    return <Peg value={pegs[index]} />
-  });
-
   const codeRow = code.map((_, index) => {
     return (
       <CodeSquare
@@ -35,9 +31,15 @@ const CodeRow = ({ guessNumber, enableInteraction, checkGuess }: Props) => {
     );
   });
 
+  const pegRow = pegs.map((_, index) => {
+    return <Peg value={pegs[index]} />
+  });
+
   return (
-    <div className="guessRow">
+    <div className="guess-row">
       {/* <h3>{guessNumber}</h3> */}
+      {/* TODO have this only show up if 4 colors
+      are selected */}
       <div className="submitGuess">
         {enableInteraction && (
           <button
@@ -50,8 +52,8 @@ const CodeRow = ({ guessNumber, enableInteraction, checkGuess }: Props) => {
           </button>
         )}
       </div>
-      <div className="codeContainer">{codeRow}</div>
-      <div className="solutionPegs">{pegRow}</div>
+      <div className="guess-code">{codeRow}</div>
+      <div className="guess-pegs">{pegRow}</div>
     </div>
   );
 };
