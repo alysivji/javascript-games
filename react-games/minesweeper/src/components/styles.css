@@ -24,7 +24,7 @@
   height: 100%;
   padding: 0;        /* Removes padding that could affect size */
   border: none;      /* Removes border that could affect size */
-  background: none;  /* Optional: Ensures no background color or style */
+  background-color: #ccc;
 }
 
 .tooltip {

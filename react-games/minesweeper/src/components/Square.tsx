@@ -37,7 +37,11 @@ export const SquareElement: React.FC<Props> = ({ point, square, revealSquare, to
             ?
             "💣"
             :
-            square.numNeighborMines
+            (square.numNeighborMines === 0)
+              ?
+              ""
+              :
+              square.numNeighborMines
           :
           <button
             className="unrevealed"

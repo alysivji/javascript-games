@@ -23,6 +23,7 @@ const Minesweeper = () => {
   }
 
   const handleToggleFlag = (point: Point) => {
+    if (gameState !== GameState.IN_PROGRESS) return;
     if (squares.get(point.toString())!.revealed) return;
 
     const squaresArr: [string, Square][] = Array.from(squares.entries()).map(([point_str, square]) => {
@@ -38,6 +39,7 @@ const Minesweeper = () => {
   }
 
   const revealSquare = (point: Point) => {
+    if (gameState !== GameState.IN_PROGRESS) return;
     const currSquare = squares.get(point.toString())!
     if (currSquare.revealed) return;
     if (currSquare.flagged) return;
@@ -46,7 +48,7 @@ const Minesweeper = () => {
       if (point.toString() !== point_str) return [point_str, square]
       const newSquare: Square = {
         ...square,
-        revealed: !square.revealed,
+        revealed: true,
       }
       return [point_str, newSquare];
     })
@@ -55,13 +57,23 @@ const Minesweeper = () => {
 
     // if the squares has no mine neighbours, find area of no mines
     if (currSquare.numNeighborMines === 0) {
-
+      const pointsToReveal: Point[] = findPointsToReveal(updatedSquares, point)
+      pointsToReveal.forEach(p => {
+        const square = updatedSquares.get(p.toString())!
+        const newSquare: Square = {
+          ...square,
+          revealed: true
+        }
+        updatedSquares.set(p.toString(), newSquare);
+      });
     }
 
     setSquares(updatedSquares);
 
     // check game conditions
     if (currSquare.mine) setGameState(GameState.USER_LOST);
+    const numSquaresToReveal = Array.from(updatedSquares.entries()).filter(([point_str, square]) => !square.revealed).length
+    if (numSquaresToReveal === numMines) setGameState(GameState.USER_WON);
   }
 
   const board = Array.from(squares.entries()).map(([point_str, square]) => {
@@ -136,5 +148,45 @@ const initializeBoard = (rows: number, cols: number, numMines: number): Map<stri
   return squares;
 }
 
+
+const findPointsToReveal = (squares: Map<string, Square>, point: Point): Point[] => {
+  const currSquare = squares.get(point.toString())!
+  if (currSquare.numNeighborMines !== 0) return []
+
+  // find all zero neighbour points connected to point
+  let zeroNeighbourKeys = new Set<string>();
+  let searchedKeys = new Set<string>();
+  let toSearchKeys = [point.toString()]
+
+  while (toSearchKeys.length > 0) {
+    const p_key = toSearchKeys.pop()!;
+    searchedKeys.add(p_key);
+    const s = squares.get(p_key)!
+    if (s.numNeighborMines === 0) zeroNeighbourKeys.add(p_key);
+
+    Point.fromString(p_key).adjacent8().forEach(adjP => {
+      const adjPStr = adjP.toString();
+      const adjSquare = squares.get(adjPStr);
+      if (adjSquare === undefined) return
+      if (adjSquare.numNeighborMines !== 0) return
+      if (searchedKeys.has(adjPStr)) return
+      toSearchKeys.push(adjPStr);
+    })
+  }
+
+  // get all adjacent points to zeroNeighbourKeys
+  const frontierPoints: Set<string> = new Set();
+  zeroNeighbourKeys.forEach(key => {
+    Point.fromString(key).adjacent8().forEach(frontierP => {
+      const s = squares.get(frontierP.toString());
+      if (s === undefined) return
+      frontierPoints.add(frontierP.toString())
+    })
+  })
+
+  const allKeysToReveal = Array.from(frontierPoints).concat(Array.from(zeroNeighbourKeys));
+
+  return allKeysToReveal.map(pStr => Point.fromString(pStr));
+}
 
 export default Minesweeper;
