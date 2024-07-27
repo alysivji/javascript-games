@@ -1,0 +1,32 @@
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 30px); /* adjust size as needed */
+  grid-template-rows: repeat(auto-fill, 30px);   /* adjust size as needed */
+  gap: 2px; /* space between squares */
+}
+
+.square {
+  position: relative;
+  cursor: pointer;
+
+  width: 30px; /* adjust size as needed */
+  height: 30px; /* adjust size as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc; /* style as needed */
+  background-color: #eee; /* style as needed */
+}
+
+.tooltip {
+  position: absolute;
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  white-space: nowrap; /* Keeps the content on one line */
+  top: 100%; /* Positions the tooltip right below the square */
+  left: 50%; /* Center it horizontally */
+  transform: translateX(-50%); /* Ensures it's centered */
+  z-index: 1000; /* Ensures it appears above other content */
+}
