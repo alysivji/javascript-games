@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Board } from './Board'
+import { SquareElement } from './Square';
 import { Point, Square } from './types';
 
 const rows = 10;
@@ -22,9 +22,61 @@ const Minesweeper = () => {
     setSquares(initializeBoard(rows, cols, numMines));
   }
 
-  const handleGameOverClick = () => {
-    setGameState(GameState.USER_LOST);
+  const handleToggleFlag = (point: Point) => {
+    if (squares.get(point.toString())!.revealed) return;
+
+    const squaresArr: [string, Square][] = Array.from(squares.entries()).map(([point_str, square]) => {
+      if (point.toString() !== point_str) return [point_str, square]
+      const newSquare: Square = {
+        ...square,
+        flagged: !square.flagged,
+      }
+      return [point_str, newSquare];
+    })
+
+    setSquares(new Map(squaresArr));
   }
+
+  const revealSquare = (point: Point) => {
+    const currSquare = squares.get(point.toString())!
+    if (currSquare.revealed) return;
+    if (currSquare.flagged) return;
+
+    const squaresArr: [string, Square][] = Array.from(squares.entries()).map(([point_str, square]) => {
+      if (point.toString() !== point_str) return [point_str, square]
+      const newSquare: Square = {
+        ...square,
+        revealed: !square.revealed,
+      }
+      return [point_str, newSquare];
+    })
+
+    const updatedSquares = new Map(squaresArr);
+
+    // if the squares has no mine neighbours, find area of no mines
+    if (currSquare.numNeighborMines === 0) {
+
+    }
+
+    setSquares(updatedSquares);
+
+    // check game conditions
+    if (currSquare.mine) setGameState(GameState.USER_LOST);
+  }
+
+  const board = Array.from(squares.entries()).map(([point_str, square]) => {
+    const point = Point.fromString(point_str)
+
+    return (
+      <SquareElement
+        key={point.toString()}
+        point={point}
+        square={square}
+        revealSquare={revealSquare}
+        toggleFlag={handleToggleFlag}
+      />
+    );
+  });
 
   return (
     <>
@@ -32,8 +84,9 @@ const Minesweeper = () => {
       <p>Currently playing easy mode (TODO make mode toggleable)</p>
       <p>Current State: {gameState}</p>
       <button onClick={handleRestartGameClick}>Restart Game</button>
-      <button onClick={handleGameOverClick}>Game Over</button>
-      <Board squares={squares} />
+      <div className="game-board">
+        {board}
+      </div>
     </>
   )
 }
@@ -52,8 +105,6 @@ const initializeBoard = (rows: number, cols: number, numMines: number): Map<stri
       squares.set(location.toString(), square);
     }
   }
-
-  console.log(squares)
 
   // set mine locations
   const squareLocations = Array.from(squares.keys());

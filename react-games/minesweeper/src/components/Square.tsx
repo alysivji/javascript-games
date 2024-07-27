@@ -5,35 +5,50 @@ import './styles.css'
 type Props = {
   point: Point
   square: Square
+  revealSquare: (point: Point) => void;
+  toggleFlag: (point: Point) => void;
 }
 
-export const SquareElement: React.FC<Props> = ({ point, square }) => {
-  const [showTooltip, setShowTooltip] = useState(false);
-
+export const SquareElement: React.FC<Props> = ({ point, square, revealSquare, toggleFlag }) => {
   const style = {
     gridRowStart: point.row + 1,
     gridColumnStart: point.col + 1
   };
 
-  const handleMouseEnter = () => setShowTooltip(false);
-  const handleMouseLeave = () => setShowTooltip(false);
+  const handleLeftClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    revealSquare(point);
+  }
 
-  const tooltipContent = `Row: ${point.row}, Col: ${point.col}, Mines: ${square.mine} NeighborMines: ${square.numNeighborMines}`;
+  const handleRightClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    toggleFlag(point)
+  }
 
   return (
     <div
-      key={point.toString()}
       className={`square row-${point.row} col-${point.col}`}
       style={style}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
-      {square.mine ? "💣" : square.numNeighborMines}
-      {showTooltip && (
-        <div className="tooltip" style={{ position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)', zIndex: 1000 }}>
-          {tooltipContent}
-        </div>
-      )}
+      {
+        square.revealed
+          ?
+          square.mine
+            ?
+            "💣"
+            :
+            square.numNeighborMines
+          :
+          <button
+            className="unrevealed"
+            onClick={handleLeftClick}
+            onContextMenu={handleRightClick}
+          >
+            {
+              square.flagged ? "🚩" : ""
+            }
+          </button>
+      }
     </div>
   )
 }
