@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { SquareElement } from './Square';
+import { Button, Text, Box, Grid, GridItem } from '@chakra-ui/react';
+import { SquareUi } from './SquareUI';
 import { Point, Square } from './types';
 
 const rows = 10;
@@ -71,7 +72,10 @@ const Minesweeper = () => {
     setSquares(updatedSquares);
 
     // check game conditions
-    if (currSquare.mine) setGameState(GameState.USER_LOST);
+    if (currSquare.mine) {
+      setGameState(GameState.USER_LOST);
+      return;
+    }
     const numSquaresToReveal = Array.from(updatedSquares.entries()).filter(([point_str, square]) => !square.revealed).length
     if (numSquaresToReveal === numMines) setGameState(GameState.USER_WON);
   }
@@ -80,26 +84,29 @@ const Minesweeper = () => {
     const point = Point.fromString(point_str)
 
     return (
-      <SquareElement
-        key={point.toString()}
-        point={point}
-        square={square}
-        revealSquare={revealSquare}
-        toggleFlag={handleToggleFlag}
-      />
+      <GridItem gridRow={point.row + 1} gridColumn={point.col + 1} >
+        <SquareUi
+          key={point.toString()}
+          point={point}
+          square={square}
+          revealSquare={revealSquare}
+          toggleFlag={handleToggleFlag}
+        />
+      </GridItem>
     );
   });
 
   return (
-    <>
-      <h1>Minesweeper</h1>
-      <p>Currently playing easy mode (TODO make mode toggleable)</p>
-      <p>Current State: {gameState}</p>
-      <button onClick={handleRestartGameClick}>Restart Game</button>
-      <div className="game-board">
+
+    <Box p={5}>
+      <Text fontSize="2xl" mb={4}>Minesweeper</Text>
+      <Text mb={2}>Currently playing easy mode (TODO make mode toggleable)</Text>
+      <Text mb={4}>Current State: {gameState}</Text>
+      <Button colorScheme="blue" onClick={handleRestartGameClick} mb={4}>Restart Game</Button>
+      <Grid templateColumns="repeat(auto-fill, 40px)" gap={0} autoRows="repeat(auto-fill, 40px)">
         {board}
-      </div>
-    </>
+      </Grid>
+    </Box>
   )
 }
 
