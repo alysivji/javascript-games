@@ -24,7 +24,7 @@ export class Point {
   }
 }
 
-export interface Square {
+export interface TileDetails {
   mine: boolean;
   revealed: boolean;
   flagged: boolean;

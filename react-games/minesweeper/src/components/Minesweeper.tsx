@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Text, Box, Grid, GridItem } from '@chakra-ui/react';
-import { SquareUi } from './SquareUI';
-import { Point, Square } from './types';
+import { MinesweeperTile } from './MinesweeperTile';
+import { Point, TileDetails } from './types';
 
 const rows = 10;
 const cols = 10;
@@ -16,80 +16,80 @@ enum GameState {
 
 const Minesweeper = () => {
   const [gameState, setGameState] = useState(GameState.IN_PROGRESS);
-  const [squares, setSquares] = useState(initializeBoard(rows, cols, numMines));
+  const [tiles, setTiles] = useState(initializeBoard(rows, cols, numMines));
 
   const handleRestartGameClick = () => {
     setGameState(GameState.IN_PROGRESS);
-    setSquares(initializeBoard(rows, cols, numMines));
+    setTiles(initializeBoard(rows, cols, numMines));
   }
 
   const handleToggleFlag = (point: Point) => {
     if (gameState !== GameState.IN_PROGRESS) return;
-    if (squares.get(point.toString())!.revealed) return;
+    if (tiles.get(point.toString())!.revealed) return;
 
-    const squaresArr: [string, Square][] = Array.from(squares.entries()).map(([point_str, square]) => {
-      if (point.toString() !== point_str) return [point_str, square]
-      const newSquare: Square = {
-        ...square,
-        flagged: !square.flagged,
+    const tilesArr: [string, TileDetails][] = Array.from(tiles.entries()).map(([point_str, tile]) => {
+      if (point.toString() !== point_str) return [point_str, tile]
+      const newTileDetails: TileDetails = {
+        ...tile,
+        flagged: !tile.flagged,
       }
-      return [point_str, newSquare];
+      return [point_str, newTileDetails];
     })
 
-    setSquares(new Map(squaresArr));
+    setTiles(new Map(tilesArr));
   }
 
-  const revealSquare = (point: Point) => {
+  const handleRevealTile = (point: Point) => {
     if (gameState !== GameState.IN_PROGRESS) return;
-    const currSquare = squares.get(point.toString())!
-    if (currSquare.revealed) return;
-    if (currSquare.flagged) return;
+    const currTile = tiles.get(point.toString())!
+    if (currTile.revealed) return;
+    if (currTile.flagged) return;
 
-    const squaresArr: [string, Square][] = Array.from(squares.entries()).map(([point_str, square]) => {
-      if (point.toString() !== point_str) return [point_str, square]
-      const newSquare: Square = {
-        ...square,
+    const tilesArr: [string, TileDetails][] = Array.from(tiles.entries()).map(([point_str, tile]) => {
+      if (point.toString() !== point_str) return [point_str, tile]
+      const newTileDetails: TileDetails = {
+        ...tile,
         revealed: true,
       }
-      return [point_str, newSquare];
+      return [point_str, newTileDetails];
     })
 
-    const updatedSquares = new Map(squaresArr);
+    const updatedTiles = new Map(tilesArr);
 
-    // if the squares has no mine neighbours, find area of no mines
-    if (currSquare.numNeighborMines === 0) {
-      const pointsToReveal: Point[] = findPointsToReveal(updatedSquares, point)
+    // if the tile has no mine neighbours, find area of no mines
+    if (currTile.numNeighborMines === 0) {
+      const pointsToReveal: Point[] = findPointsToReveal(updatedTiles, point)
       pointsToReveal.forEach(p => {
-        const square = updatedSquares.get(p.toString())!
-        const newSquare: Square = {
-          ...square,
+        const tile = updatedTiles.get(p.toString())!
+        const newTileDetails: TileDetails = {
+          ...tile,
           revealed: true
         }
-        updatedSquares.set(p.toString(), newSquare);
+        updatedTiles.set(p.toString(), newTileDetails);
       });
     }
 
-    setSquares(updatedSquares);
+    setTiles(updatedTiles);
 
     // check game conditions
-    if (currSquare.mine) {
+    if (currTile.mine) {
       setGameState(GameState.USER_LOST);
       return;
     }
-    const numSquaresToReveal = Array.from(updatedSquares.entries()).filter(([point_str, square]) => !square.revealed).length
-    if (numSquaresToReveal === numMines) setGameState(GameState.USER_WON);
+    const numTilesToReveal = Array.from(updatedTiles.entries()).filter(([point_str, tile]) => !tile.revealed).length
+    if (numTilesToReveal === numMines) setGameState(GameState.USER_WON);
   }
 
-  const board = Array.from(squares.entries()).map(([point_str, square]) => {
+  const board = Array.from(tiles.entries()).map(([point_str, tile]) => {
     const point = Point.fromString(point_str)
 
     return (
       <GridItem gridRow={point.row + 1} gridColumn={point.col + 1} >
-        <SquareUi
+        <MinesweeperTile
           key={point.toString()}
           point={point}
-          square={square}
-          revealSquare={revealSquare}
+          tile={tile}
+          revealTile={handleRevealTile}
           toggleFlag={handleToggleFlag}
         />
       </GridItem>
@@ -110,55 +110,55 @@ const Minesweeper = () => {
   )
 }
 
-const initializeBoard = (rows: number, cols: number, numMines: number): Map<string, Square> => {
-  const squares: Map<string, Square> = new Map();
+const initializeBoard = (rows: number, cols: number, numMines: number): Map<string, TileDetails> => {
+  const tiles: Map<string, TileDetails> = new Map();
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
       const location = new Point(row, col)
-      const square: Square = {
+      const tileDetails: TileDetails = {
         mine: false,
         revealed: false,
         flagged: false,
         numNeighborMines: 0,
       }
-      squares.set(location.toString(), square);
+      tiles.set(location.toString(), tileDetails);
     }
   }
 
   // set mine locations
-  const squareLocations = Array.from(squares.keys());
-  const mineLocations = squareLocations.sort(() => 0.5 - Math.random()).slice(0, numMines);
+  const tileLocations = Array.from(tiles.keys());
+  const mineLocations = tileLocations.sort(() => 0.5 - Math.random()).slice(0, numMines);
 
   // update board with mines
   mineLocations.forEach(point_str => {
     const point = Point.fromString(point_str);
     // add mine
-    const updatedMine: Square = {
-      ...squares.get(point_str)!,
+    const updatedMine: TileDetails = {
+      ...tiles.get(point_str)!,
       mine: true,
       numNeighborMines: -1,
     }
-    squares.set(point_str, updatedMine);
+    tiles.set(point_str, updatedMine);
 
     // go through mine neighbours and update num mines hint
     point.adjacent8().forEach(adjP => {
-      const adjacentSquare = squares.get(adjP.toString());
-      if (adjacentSquare === undefined) return;
-      const updatedSquare: Square = {
-        ...adjacentSquare,
-        numNeighborMines: adjacentSquare.numNeighborMines + 1,
+      const adjacentTile = tiles.get(adjP.toString());
+      if (adjacentTile === undefined) return;
+      const updatedTileDetails: TileDetails = {
+        ...adjacentTile,
+        numNeighborMines: adjacentTile.numNeighborMines + 1,
       }
-      squares.set(adjP.toString(), updatedSquare);
+      tiles.set(adjP.toString(), updatedTileDetails);
     })
   })
 
-  return squares;
+  return tiles;
 }
 
 
-const findPointsToReveal = (squares: Map<string, Square>, point: Point): Point[] => {
-  const currSquare = squares.get(point.toString())!
-  if (currSquare.numNeighborMines !== 0) return []
+const findPointsToReveal = (tiles: Map<string, TileDetails>, point: Point): Point[] => {
+  const currTile = tiles.get(point.toString())!
+  if (currTile.numNeighborMines !== 0) return []
 
   // find all zero neighbour points connected to point
   let zeroNeighbourKeys = new Set<string>();
@@ -168,14 +168,14 @@ const findPointsToReveal = (squares: Map<string, Square>, point: Point): Point[]
   while (toSearchKeys.length > 0) {
     const p_key = toSearchKeys.pop()!;
     searchedKeys.add(p_key);
-    const s = squares.get(p_key)!
+    const s = tiles.get(p_key)!
     if (s.numNeighborMines === 0) zeroNeighbourKeys.add(p_key);
 
     Point.fromString(p_key).adjacent8().forEach(adjP => {
       const adjPStr = adjP.toString();
-      const adjSquare = squares.get(adjPStr);
-      if (adjSquare === undefined) return
-      if (adjSquare.numNeighborMines !== 0) return
+      const adjacentTile = tiles.get(adjPStr);
+      if (adjacentTile === undefined) return
+      if (adjacentTile.numNeighborMines !== 0) return
       if (searchedKeys.has(adjPStr)) return
       toSearchKeys.push(adjPStr);
     })
@@ -185,7 +185,7 @@ const findPointsToReveal = (squares: Map<string, Square>, point: Point): Point[]
   const frontierPoints: Set<string> = new Set();
   zeroNeighbourKeys.forEach(key => {
     Point.fromString(key).adjacent8().forEach(frontierP => {
-      const s = squares.get(frontierP.toString());
+      const s = tiles.get(frontierP.toString());
       if (s === undefined) return
       frontierPoints.add(frontierP.toString())
     })

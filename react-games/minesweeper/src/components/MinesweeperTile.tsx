@@ -1,18 +1,18 @@
 import React from 'react'
 import { Box } from '@chakra-ui/react';
-import { Point, Square } from './types'
+import { Point, TileDetails } from './types'
 
 type Props = {
   point: Point
-  square: Square
-  revealSquare: (point: Point) => void;
+  tile: TileDetails
+  revealTile: (point: Point) => void;
   toggleFlag: (point: Point) => void;
 }
 
-export const SquareUi: React.FC<Props> = ({ point, square, revealSquare, toggleFlag }) => {
+export const MinesweeperTile: React.FC<Props> = ({ point, tile, revealTile, toggleFlag }) => {
   const handleLeftClick = (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent default to stop the page from navigating on drag.
-    revealSquare(point);
+    revealTile(point);
   }
 
   const handleRightClick = (e: React.MouseEvent) => {
@@ -31,15 +31,15 @@ export const SquareUi: React.FC<Props> = ({ point, square, revealSquare, toggleF
       alignItems="center"
       justifyContent="center"
       border="1px solid #000" // border style
-      bgColor={square.revealed ? (square.mine ? "red" : "#eee") : "#ccc"}  // background color changes based on state
+      bgColor={tile.revealed ? (tile.mine ? "red" : "#eee") : "#ccc"}  // background color changes based on state
       cursor="pointer"
       position="relative"
     >
       {
-        square.revealed ? (
-          square.mine ? "💣" : (square.numNeighborMines === 0 ? "" : square.numNeighborMines)
+        tile.revealed ? (
+          tile.mine ? "💣" : (tile.numNeighborMines === 0 ? "" : tile.numNeighborMines)
         ) : (
-          square.flagged ? "🚩" : ""
+          tile.flagged ? "🚩" : ""
         )
       }
     </Box>
