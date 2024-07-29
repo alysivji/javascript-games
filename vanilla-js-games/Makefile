@@ -11,6 +11,3 @@ tictactoe:
 
 pong:
 	parcel pong-mouse/index.html
-
-mastermind:
-	@echo "See mastermind/README.md"

@@ -18,3 +18,10 @@ Practicing my JavaScript / TypeScript skills by making games.
 | __Game__              | __Description__
 | --------              | ---------------
 | mastermind            | Mastermind via CLI
+
+### React Games
+
+| __Game__              | __Description__
+| --------              | ---------------
+| mastermind            | Mastermind -- very hacky
+| minesweeper           | Minesweeper clone
