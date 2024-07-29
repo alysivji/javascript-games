@@ -1,26 +1,34 @@
-import React, { useState } from 'react'
-import { Button, Text, Box, Grid, GridItem } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react'
+import { Button, Text, Box, Grid, GridItem, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Stack, RadioGroup, Radio } from '@chakra-ui/react';
+import { MdBuild, MdOutlineRestartAlt } from "react-icons/md"
 import { MinesweeperTile } from './MinesweeperTile';
-import { Point, TileDetails } from './types';
-
-const rows = 10;
-const cols = 10;
-const numMines = 10;
-
+import { Point, TileDetails, Difficulty, difficultyDetails } from './types';
 
 enum GameState {
-  IN_PROGRESS = "In Progress",
-  USER_WON = "User Won",
-  USER_LOST = "User Lost"
+  IN_PROGRESS = "😀",
+  USER_WON = "😎",
+  USER_LOST = "😵",
 }
 
+// TODO -- when you click a bomb, it shows more than 1 bomb sometimes
+
 const Minesweeper = () => {
+  const [difficulty, setDifficulty] = useState(Difficulty.BEGINNER)
+  const [selectedDifficulty, setSelectedDifficulty] = useState(difficulty);
   const [gameState, setGameState] = useState(GameState.IN_PROGRESS);
-  const [tiles, setTiles] = useState(initializeBoard(rows, cols, numMines));
+  const [tiles, setTiles] = useState(initializeBoard(difficulty));
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  useEffect(() => {
+    setGameState(GameState.IN_PROGRESS);
+    setTiles(initializeBoard(difficulty));
+  }, [difficulty]);
+
+  const numMines = difficultyDetails.get(difficulty)!.numMines;
 
   const handleRestartGameClick = () => {
     setGameState(GameState.IN_PROGRESS);
-    setTiles(initializeBoard(rows, cols, numMines));
+    setTiles(initializeBoard(difficulty));
   }
 
   const handleToggleFlag = (point: Point) => {
@@ -80,6 +88,18 @@ const Minesweeper = () => {
     if (numTilesToReveal === numMines) setGameState(GameState.USER_WON);
   }
 
+  const handleChangeSelectedDifficulty = (nextValue: string) => {
+    const updatedDifficulty = nextValue as Difficulty;
+    setSelectedDifficulty(updatedDifficulty);
+  }
+
+  const handleCloseChangeDifficultyModal = () => {
+    onClose();
+    if (difficulty !== selectedDifficulty) {
+      setDifficulty(selectedDifficulty)
+    }
+  }
+
   const board = Array.from(tiles.entries()).map(([point_str, tile]) => {
     const point = Point.fromString(point_str)
 
@@ -97,20 +117,52 @@ const Minesweeper = () => {
   });
 
   return (
+    <>
+      <Box p={5}>
+        <Text fontSize="2xl" mb={4}>Minesweeper</Text>
+        <Text mb={4} fontSize={24}>{gameState}</Text>
 
-    <Box p={5}>
-      <Text fontSize="2xl" mb={4}>Minesweeper</Text>
-      <Text mb={2}>Currently playing easy mode (TODO make mode toggleable)</Text>
-      <Text mb={4}>Current State: {gameState}</Text>
-      <Button colorScheme="blue" onClick={handleRestartGameClick} mb={4}>Restart Game</Button>
-      <Grid templateColumns="repeat(auto-fill, 40px)" gap={0} autoRows="repeat(auto-fill, 40px)">
-        {board}
-      </Grid>
-    </Box>
+        <Stack direction='row' spacing={4}>
+          <Button colorScheme="green" onClick={onOpen} mb={4} leftIcon={<MdBuild />}>Change Difficulty</Button>
+          <Button colorScheme="blue" onClick={handleRestartGameClick} mb={4} leftIcon={<MdOutlineRestartAlt />}>Restart Game</Button>
+        </Stack>
+
+        <Grid templateColumns="repeat(auto-fill, 40px)" gap={0} autoRows="repeat(auto-fill, 40px)">
+          {board}
+        </Grid>
+      </Box>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Change Difficulty</ModalHeader>
+          <ModalCloseButton onClick={handleRestartGameClick} />
+          <ModalBody>
+            <RadioGroup value={selectedDifficulty} onChange={handleChangeSelectedDifficulty}>
+              <Stack direction='row'>
+                <Radio value={Difficulty.BEGINNER}>Beginner</Radio>
+                <Radio value={Difficulty.INTERMEDIATE}>Intermediate</Radio>
+                <Radio value={Difficulty.EXPERT}>Expert</Radio>
+              </Stack>
+            </RadioGroup>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='blue' mr={3} onClick={handleCloseChangeDifficultyModal}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   )
 }
 
-const initializeBoard = (rows: number, cols: number, numMines: number): Map<string, TileDetails> => {
+const initializeBoard = (difficulty: Difficulty): Map<string, TileDetails> => {
+  const difficultyDetail = difficultyDetails.get(difficulty)!;
+  const rows = difficultyDetail.rows;
+  const cols = difficultyDetail.cols;
+  const numMines = difficultyDetail.numMines;
+
   const tiles: Map<string, TileDetails> = new Map();
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
@@ -175,6 +227,7 @@ const findPointsToReveal = (tiles: Map<string, TileDetails>, point: Point): Poin
       const adjPStr = adjP.toString();
       const adjacentTile = tiles.get(adjPStr);
       if (adjacentTile === undefined) return
+      if (adjacentTile.flagged === true) return
       if (adjacentTile.numNeighborMines !== 0) return
       if (searchedKeys.has(adjPStr)) return
       toSearchKeys.push(adjPStr);
@@ -187,6 +240,7 @@ const findPointsToReveal = (tiles: Map<string, TileDetails>, point: Point): Poin
     Point.fromString(key).adjacent8().forEach(frontierP => {
       const s = tiles.get(frontierP.toString());
       if (s === undefined) return
+      if (s.flagged === true) return
       frontierPoints.add(frontierP.toString())
     })
   })

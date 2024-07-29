@@ -30,3 +30,32 @@ export interface TileDetails {
   flagged: boolean;
   numNeighborMines: number; // if mine = true, this will be -1
 }
+
+export enum Difficulty {
+  BEGINNER = "BEGINNER",
+  INTERMEDIATE = "INTERMEDIATE",
+  EXPERT = "EXPERT",
+}
+
+interface DifficultyDetails {
+  rows: number
+  cols: number,
+  numMines: number,
+}
+
+export const difficultyDetails = new Map<Difficulty, DifficultyDetails>();
+difficultyDetails.set(Difficulty.BEGINNER, {
+  rows: 10,
+  cols: 10,
+  numMines: 10,
+})
+difficultyDetails.set(Difficulty.INTERMEDIATE, {
+  rows: 16,
+  cols: 16,
+  numMines: 40,
+})
+difficultyDetails.set(Difficulty.EXPERT, {
+  rows: 16,
+  cols: 30,
+  numMines: 99,
+})

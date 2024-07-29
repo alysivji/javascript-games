@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { Point, TileDetails } from './types'
 
 type Props = {
@@ -35,13 +35,15 @@ export const MinesweeperTile: React.FC<Props> = ({ point, tile, revealTile, togg
       cursor="pointer"
       position="relative"
     >
-      {
-        tile.revealed ? (
-          tile.mine ? "💣" : (tile.numNeighborMines === 0 ? "" : tile.numNeighborMines)
-        ) : (
-          tile.flagged ? "🚩" : ""
-        )
-      }
+      <Text fontSize={24}>
+        {
+          tile.revealed ? (
+            tile.mine ? "💣" : (tile.numNeighborMines === 0 ? "" : tile.numNeighborMines)
+          ) : (
+            tile.flagged ? "🚩" : ""
+          )
+        }
+      </Text>
     </Box>
   )
 }
